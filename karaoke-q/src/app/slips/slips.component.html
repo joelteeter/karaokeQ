@@ -1,0 +1,27 @@
+<div cdkDropList class="" (cdkDropListDropped)="drop($event)">
+	<div class="card slip" *ngFor="let slip of slips; index as indexOfElement" cdkDrag [cdkDragData]="slip" cdkDragLockAxis="y">
+		<button 
+			class="card-header d-flex " 
+			(click)="collapse.toggle(slip.isCollapsed)" 
+			[attr.aria-expanded]="!slip.isCollapsed" 
+			attr.aria-controls="#slip-{{indexOfElement}}"
+			style="border: 2px solid {{slip.singer.color}}; background-color: {{slip.singer.color}}17;"
+		>
+		    <div class="d-flex justify-contnent-center align-items-center px-5 expand-wrapper">
+		    	<fa-icon *ngIf="slip.isCollapsed" [icon]="faPlus"></fa-icon>
+		    	<fa-icon *ngIf="!slip.isCollapsed" [icon]="faMinus"></fa-icon>
+		    </div>
+		    <h2 class="m-0" style="color: {{slip.singer.color}};">{{slip.singer.name}} : {{slip.song.title}} - {{slip.song.artist}}</h2>
+		</button>
+		<div class="card-body" #collapse="ngbCollapse" [(ngbCollapse)]="slip.isCollapsed" style="background-color: {{slip.singer.color}}17;">
+
+			<h5 class="card-title">{{slip.song ? slip.song.title : ''}}</h5>
+			<h5 class="card-title">{{slip.song ? slip.song.artist : ''}}</h5>
+			<p class="card-text">{{indexOfElement < 1 ? slip.song.runTime : 'tbd'}}</p>
+			<app-slip-detail [slip]="slip" (newSlip)="editSlip($event)"></app-slip-detail>
+			<button (click)="deleteSlip(slip)" type="button" class="btn btn-danger">
+				<fa-icon [icon]="faTrashAlt"></fa-icon>
+			</button>
+		</div>
+	</div>
+</div>

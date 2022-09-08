@@ -1,0 +1,28 @@
+<button type="button" (click)="open(content)" class="btn btn-primary">Update Song Library</button>
+
+<ng-template #content let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">Upload new library</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<form>
+			<div class="mb-3">
+
+
+				<input type="file" class="file-input" accept=".csv" (change)="onFileSelected($event)" #fileUpload>
+				<div class="file-upload">
+					{{fileName || "No file uploaded yet."}}
+					<button mat-mini-fab color="primary" class="upload-btn" (click)="fileUpload.click()">
+						<fa-icon [icon]="faFile"></fa-icon>
+					</button>
+				</div>
+
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-primary" (click)="modal.close('Save click')">Save</button>
+		<button type="button" class="btn btn-danger" (click)="modal.close('Cross click')">Cancel</button>
+	</div>
+</ng-template>	

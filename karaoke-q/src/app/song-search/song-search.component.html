@@ -1,0 +1,28 @@
+<div id="search-component">
+  <div *ngIf="!songSelected" class="search-box-wrapper">
+    <label for="search-box">Find a song</label>
+    <input #searchBox id="search-box" class="form-control" [(ngModel)]="searchTerm" (input)="search(searchBox.value)" />
+  </div>
+  <div *ngIf="songSelected" class="search-box-wrapper">
+    <label for="search-box">
+      <span>Song:</span>
+      
+    </label>
+    <div class="selected-song">
+      <span class="me-2">
+        <button (click)="cancelSelectedSong()" type="button" class="btn btn-danger small">
+          <fa-icon [icon]="faTrashAlt"></fa-icon>
+        </button>
+      </span>
+      <span class="song-title me-2">{{songSelected.title}},</span>
+      <span class="song-artist">{{songSelected.artist}}</span>
+    </div>
+  </div>
+
+  <div id="search-result-wrapper">
+        <div *ngFor="let song of songs$ | async" (click)="selectSong(song)" class="search-result">
+	        <span class="song-title me-2">{{song.title}},</span>
+	    	  <span class="song-artist">{{song.artist}}</span>
+    	</div>
+  </div>
+</div>
