@@ -1,0 +1,12 @@
+.singers-wrapper {
+	display: flex;	
+}
+.singer {
+	&.card {
+		max-width: 200px;
+		.singer-card-hr {
+			height: 20px;
+			width: 100%;
+		}
+	}
+}

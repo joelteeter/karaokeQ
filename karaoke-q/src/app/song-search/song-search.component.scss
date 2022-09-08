@@ -1,0 +1,34 @@
+#search-result-wrapper {
+    max-height: 200px;
+    overflow: auto;
+    width: 413px;
+}
+.search-result {
+    border-bottom: 1px solid gray;
+    border-left: 1px solid gray;
+    border-right: 1px solid gray;
+    width: 100%;
+    padding: 5px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.search-result:hover {
+    color: #eee;
+    background-color: #607D8B;
+}
+
+#search-box {
+    width: 400px;
+    height: 40px;
+}
+
+.btn {
+    &.btn-danger {
+        &.small {
+            height: 30px;
+            width: 30px;
+            padding: 0;
+        }
+    }
+}

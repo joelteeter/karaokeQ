@@ -1,0 +1,32 @@
+<button *ngIf="!slip" type="button" (click)="open(content)" class="btn btn-primary">New Song</button>
+<button *ngIf="slip" (click)="open(content)" type="button" class="btn btn-success">
+  <fa-icon [icon]="faEdit"></fa-icon>
+</button>
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{slip? 'Edit Song Slip' : 'New Song Slip' }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="mb-3">
+        <div *ngIf="slip">{{slip.id}}</div>
+
+      	<div ngbDropdown>
+    			<button type="button" [disabled]="slip" class="btn btn-outline-primary" id="selectSinger" ngbDropdownToggle>{{selectedSinger ? selectedSinger.name : 'Singer'}}</button>
+    			<div ngbDropdownMenu aria-labelledby="selectSinger">
+    				<button *ngFor="let singer of singers" (click)="selectSinger(singer)" ngbDropdownItem>{{singer.name}}</button>
+			</div>
+			<app-song-search (selectedSong)="selectSong($event)" ></app-song-search>
+		</div>
+      	
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="modal.close('Save click')" [disabled]="!selectedSong || !selectedSinger">Save</button>
+    <button type="button" class="btn btn-danger" (click)="modal.close('Cross click')">Cancel</button>
+  </div>
+</ng-template>	
+
+

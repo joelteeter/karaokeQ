@@ -1,0 +1,33 @@
+<header>
+	<div>
+		<h1 class="ms-3">Karaoke Queue</h1>
+	</div>
+</header>
+
+<div class="container-fluid">
+	<div class="row">
+		
+		<div class="col-6">
+			<div class="buttons-wrapper mb-3 ms-3">
+			
+				<app-slip-detail [singers]="singers" (newSlip)="addSlip($event)"></app-slip-detail>
+				<app-update-library></app-update-library>
+				<button class="btn btn-danger" (click)="balanceQueue()">Balance Queue</button>
+				<mat-checkbox [(ngModel)]="isAutoBalanceQueue" class="example-margin">Auto Balance Queue</mat-checkbox>
+			</div>
+			<app-slips [slips]="slips" (updatedSlips)="updateSlips($event)"></app-slips>
+		</div>
+		<div class="col-6">
+			<app-singers 
+				[singers]="singers" 
+				[slips]="slips" 
+				(singersUpdate)="updateSingers($event)"
+				(slipsUpdate)="updateSlips($event)"  
+			></app-singers>
+			
+		</div>
+	</div>
+</div>
+
+	
+
