@@ -1,13 +1,13 @@
 <button type="button" (click)="newSinger()" class="btn btn-primary mb-3">Add New Singer</button>
-<div class="singers-wrapper">
-	<div *ngFor="let singer of singers" class="card singer mb-3 me-3" style="border: 2px solid {{singer.color}};">
-	  <div class="card-body" style="color: {{singer.color}};">
+<div class="singers-wrapper d-flex">
+	<div *ngFor="let singer of singers" class="card singer mb-3 me-3 d-flex" style="border: 2px solid {{singer.color}};">
+	  <div class="card-body p-1 p-lg-3" style="color: {{singer.color}};">
 	    <h2>{{singer.name}}</h2>
-	    <div>
-		    <button type="button" (click)="editSinger(singer)" class="btn btn-success">
+	    <div class="d-flex d-lg-block justify-content-start">
+		    <button type="button" (click)="editSinger(singer)" class="btn btn-success small">
 				<fa-icon [icon]="faEdit"></fa-icon>
 			</button>
-			<button (click)="deleteSinger(singer)" type="button" class="btn btn-danger">
+			<button (click)="deleteSinger(singer)" type="button" class="btn btn-danger small">
 				<fa-icon [icon]="faTrashAlt"></fa-icon>
 			</button>
 		</div>
@@ -21,4 +21,4 @@
 		(singerUpdated)="updateSinger($event)" 
 		(editCancelled)="editCancelled($event)">			
 	</app-singer-detail>
-</div>	
+</div>

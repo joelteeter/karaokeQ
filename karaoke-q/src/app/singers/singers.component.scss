@@ -1,9 +1,11 @@
 .singers-wrapper {
-	display: flex;	
+	display: flex;
+	flex-wrap: wrap;
 }
 .singer {
 	&.card {
 		max-width: 200px;
+
 		.singer-card-hr {
 			height: 20px;
 			width: 100%;

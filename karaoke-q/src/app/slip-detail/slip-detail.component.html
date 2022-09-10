@@ -10,8 +10,6 @@
   <div class="modal-body">
     <form>
       <div class="mb-3">
-        <div *ngIf="slip">{{slip.id}}</div>
-
       	<div ngbDropdown>
     			<button type="button" [disabled]="slip" class="btn btn-outline-primary" id="selectSinger" ngbDropdownToggle>{{selectedSinger ? selectedSinger.name : 'Singer'}}</button>
     			<div ngbDropdownMenu aria-labelledby="selectSinger">

@@ -3,8 +3,52 @@
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
 
-.btn {
-	margin-right: 1rem;
-}
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.btn {
+	margin-right: 1rem;
+	&.small {
+	  	height: 50px;
+	    width: 50px;
+	    display: flex;
+	    align-items: center;
+	    justify-content: center;
+	}
+}
+
+.card {
+	min-width: 100px;
+	.card-body {
+
+	}
+}
+
+@media only screen and (max-width: 992px) {
+	.btn {
+	  	&.small {
+		  	height: 30px;
+			width: 30px;
+			margin-right: 15px;
+			&:last-child {
+				margin-right: 0;
+			}
+			.ng-fa-icon {
+				svg {
+					height: 14px;
+					width: 14px;
+				}
+			}
+		}
+	}
+	.card {
+		.card-body {
+			h2 {
+				font-size: 18px;
+				margin: 0;
+			}
+		}
+	}
+}
+

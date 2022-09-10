@@ -7,17 +7,17 @@
 <div class="container-fluid">
 	<div class="row">
 		
-		<div class="col-6">
+		<div class="col-12 col-lg-6 order-2 order-lg-1 queue-col">
 			<div class="buttons-wrapper mb-3 ms-3">
 			
 				<app-slip-detail [singers]="singers" (newSlip)="addSlip($event)"></app-slip-detail>
 				<app-update-library></app-update-library>
-				<button class="btn btn-danger" (click)="balanceQueue()">Balance Queue</button>
-				<mat-checkbox [(ngModel)]="isAutoBalanceQueue" class="example-margin">Auto Balance Queue</mat-checkbox>
+				<button class="btn btn-danger mt-2 mt-lg-0" (click)="balanceQueue()">Balance Queue</button>
+				<mat-checkbox [(ngModel)]="isAutoBalanceQueue" class="mt-2 mt-lg-0">Auto Balance Queue</mat-checkbox>
 			</div>
 			<app-slips [slips]="slips" (updatedSlips)="updateSlips($event)"></app-slips>
 		</div>
-		<div class="col-6">
+		<div class="col-12 col-lg-6 order-1 order-lg-2 singers-col">
 			<app-singers 
 				[singers]="singers" 
 				[slips]="slips" 
