@@ -28,3 +28,22 @@
     }
   }
 }
+
+
+@media only screen and (max-width: 992px) {
+  .slip-drop-list {
+    width: 80%;
+    //margin: 0 auto;
+  }
+  .slip {
+    .card-header {
+      padding: 5px;
+    }
+    h2 {
+      font-size: 16px;
+      .song-artist {
+
+      }
+    }
+  }
+}

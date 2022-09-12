@@ -1,4 +1,4 @@
-<form [formGroup]="singerForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="singerForm" (ngSubmit)="onSubmit()" class="mb-2">
 	<div *ngIf="!selectedSinger.name" class="new-singer-input">
 		<label for="name">Singer: </label>
 		<input id="name"  class="form-control"  type="text" formControlName="singerName">
