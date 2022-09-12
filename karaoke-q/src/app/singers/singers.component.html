@@ -3,7 +3,7 @@
 	<div *ngFor="let singer of singers" class="card singer mb-3 me-3 d-flex" style="border: 2px solid {{singer.color}};">
 	  <div class="card-body p-1 p-lg-3" style="color: {{singer.color}};">
 	    <h2>{{singer.name}}</h2>
-	    <div class="d-flex d-lg-block justify-content-start">
+	    <div class="d-flex justify-content-start">
 		    <button type="button" (click)="editSinger(singer)" class="btn btn-success small">
 				<fa-icon [icon]="faEdit"></fa-icon>
 			</button>

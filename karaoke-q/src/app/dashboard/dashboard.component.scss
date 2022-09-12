@@ -1,5 +1,12 @@
 .singers-col {
-	border: 1px solid darkgray;
-	padding: 10px 5px 0px 5px;
-	margin-bottom: 10px;
+	border: none;
+		padding: auto;
+		margin-bottom: auto;
+}
+@media only screen and (max-width: 992px) {
+	.singers-col {
+		border: 1px solid darkgray;
+		padding: 10px 5px 0px 5px;
+		margin-bottom: 10px;
+	}
 }
