@@ -11,7 +11,7 @@ import { Song } from '../models/song';
 export class SingerDetailComponent implements OnInit {
 
   @Input() singers : Singer[] = [];
-  @Input() singerToEdit: Singer = {} as Singer;
+  @Input() singerToEdit: any = {};
   @Output() singerUpdated: EventEmitter<Singer> = new EventEmitter<Singer>();
   @Output() editCancelled: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -42,6 +42,9 @@ export class SingerDetailComponent implements OnInit {
 
   onSubmit(): void {
     const singerNameControl = this.singerForm.get('singerName');
+    if(!this.color) {
+      this.color = '#000000';
+    }
     if(singerNameControl) {
       let singer = this.singerForm.get('singerName')?.value;
 
@@ -59,15 +62,16 @@ export class SingerDetailComponent implements OnInit {
           console.log('error name should be unique');
         }
         else {
-
           if(this.singerToEdit.id) {
             this.singerToEdit.name = singer;
             this.singerToEdit.color = this.color;
+            console.log('emitting to singer.component.updatesinger()');            
             this.singerUpdated.emit(this.singerToEdit);
             
             
           } else {
             let singerToSave: any = { name: singer, song: this.selectedSong, color: this.color };
+            console.log('emitting to singer.component.updatesinger()');
             this.singerUpdated.emit(singerToSave);            
           }
           

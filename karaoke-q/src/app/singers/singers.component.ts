@@ -61,14 +61,14 @@ export class SingersComponent implements OnInit {
     this.editting = true;
   }
 
-  updateSinger(s: Singer): void {
-    if(s.id) {
-      this.singerService.updateSinger(s).subscribe(() => {
-        this.updateSlips(s);       
+  updateSinger(singer: any): void {
+    if(!singer.song) {
+      this.singerService.updateSinger(singer).subscribe(() => {
+        this.updateSlips(singer);       
       })
     } else {
-      this.singerService.addSinger(s).subscribe((singer) => {
-        this.singers.push(singer);
+      this.singerService.addSinger(singer).subscribe((singerResult) => {
+        this.singers.push(singerResult);
         this.addSlip(singer);
       })
     }

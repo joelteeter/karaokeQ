@@ -14,7 +14,7 @@ import { LogsService } from './logs.service';
 })
 export class SingerService {
 
-  private singersUrl = 'api/singers';  //web api
+  private singersUrl = 'http://localhost:3000/singers';  //web api
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -24,7 +24,7 @@ export class SingerService {
     private http: HttpClient) { }
 
   /* GET */
-  getSingers(): Observable<Singer[]> {    
+  getSingers(): Observable<Singer[]> {  
     return this.http.get<Singer[]>(this.singersUrl)
       .pipe(
           tap(_ => this.log('fetched singers')),
@@ -43,7 +43,8 @@ export class SingerService {
 
   /* PUT */
   updateSinger(singer: Singer): Observable<any> {
-    return this.http.put(this.singersUrl, singer, this.httpOptions)
+    const url = `${this.singersUrl}/${singer.id}`;
+    return this.http.put(url, singer, this.httpOptions)
       .pipe(
         tap(_ => this.log(`updated singer id=${singer.id}`)),
         catchError(this.handleError<any>('updateSinger'))

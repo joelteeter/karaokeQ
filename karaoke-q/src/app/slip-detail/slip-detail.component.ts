@@ -39,6 +39,7 @@ export class SlipDetailComponent implements OnInit {
     }
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       if(result === 'Save click') {
+        //console.log('saving slip from modal', this.slip);
         this.saveSlip(this.slip);
       }
       this.closeResult = `Closed with: ${result}`;

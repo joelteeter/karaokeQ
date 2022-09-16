@@ -58,7 +58,7 @@ export class SlipsComponent implements OnInit {
       }
     }
     moveItemInArray(this.slips, event.previousIndex, event.currentIndex);
-    console.log('emitting drop');
+    //console.log('emitting drop');
     this.updatedSlips.emit(this.slips);
     
   }
