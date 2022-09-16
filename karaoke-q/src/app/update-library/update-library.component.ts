@@ -27,7 +27,8 @@ export class UpdateLibraryComponent implements OnInit {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       if(result === 'Save click') {
         
-            this.parseCSV(';');
+            //this.parseCSV(';');
+            this.processFile();
 
         
       }
@@ -56,44 +57,54 @@ export class UpdateLibraryComponent implements OnInit {
     }
   }
 
-  parseCSV(delimiter: string): any {
-    //TODO: this REALLY should be done on the back end with one bulk update. going to limit it to 100 songs for now
-    const reader = new FileReader();
-    let songs: any = [];
-    reader.onload = (event) => {
-      if(event.target) {
-        const str = event.target.result ? event.target.result.toString() : '';
+  readFileAsync(file:any) {
+    return new Promise((resolve, reject) => {
+      let reader = new FileReader();
 
+      reader.onload = () => {
+        resolve(reader.result);
+      };
 
-        const headers = str.slice(0, str.indexOf('\n')).split(delimiter);
-        const data = str.slice(str.indexOf('\n') + 1).split('\n');
+      reader.onerror = reject;
 
-        const arr = data.map((row: any) => {
-          const values = row.split(delimiter);
-          const el = headers.reduce((obj:any, header:any, index) => {
-            obj[header] = values[index];
+      reader.readAsText(file);
+    })
+  }
 
-            return obj;
-          }, {}
-          );
-          return el;
-        });
-        const songCount = arr.length < 100 ? arr.length : 100;
-        for(let i = 0; i < songCount; i ++) {
-          let newSong = { title: arr[i]['Title'].toString().replaceAll('\"',''), artist: arr[i]['Artist'].replaceAll('\"',''), runTime: 3.5 }
-          this.songService.addSong(newSong).subscribe();
-        }
-        // this would do ALL songs, there way too many to do this way
-        // arr.forEach( (song:any) => {
-        //   let newSong = { title: song['Title'], artist: song['Artist'], runTime: 3.5 }
-        //   this.songService.addSong(newSong).subscribe();
-        // })
-        return arr;
-        } else {
-          return '';
-        }
+  async processFile() {
+    try {
+      let file = this.file;
+      let contentText = await this.readFileAsync(file);
+      this.parseCSV(';', contentText);
+    } catch(err) {
+      console.log(err);
     }
-    reader.readAsText(this.file);
+  }
+
+  parseCSV(delimiter: string, str: any): any {
+    let songs: any = [];
+
+    const headers = str.slice(0, str.indexOf('\n')).split(delimiter);
+    const data = str.slice(str.indexOf('\n') + 1).split('\n');
+
+    const arr = data.map((row: any) => {
+      const values = row.split(delimiter);
+      const el = headers.reduce((obj:any, header:any, index:any) => {
+        obj[header] = values[index];
+
+        return obj;
+      }, {}
+      );
+      return el;
+    });
+    //TODO: let 'er rip, for now just 100 songs.
+    const songCount = arr.length < 100 ? arr.length : 100;
+    for(let i = 0; i < songCount; i ++) {
+      let newSong = [arr[i]['Title'].toString().replaceAll('\"',''), arr[i]['Artist'].replaceAll('\"','')];
+      songs.push(newSong);
+    }
+    this.songService.addSongs(songs).subscribe( (res:any) => console.log(res));
+
     
   }
 

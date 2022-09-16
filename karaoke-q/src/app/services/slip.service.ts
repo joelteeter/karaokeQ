@@ -14,7 +14,7 @@ import { LogsService } from './logs.service';
 })
 export class SlipService {
 
-  private slipsUrl = 'api/slips';  //web api
+  private slipsUrl = 'http://localhost:3000/slips';  //web api
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),

@@ -47,6 +47,7 @@ export class SongSearchComponent implements OnInit {
   }
 
   selectSong(song: Song): void {
+    //console.log('selecting song from song search', song);
     this.songSelected = song;
     this.selectedSong.emit(this.songSelected);
     this.searchTerm = '';

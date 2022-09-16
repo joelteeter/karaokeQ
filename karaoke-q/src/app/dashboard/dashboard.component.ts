@@ -28,7 +28,9 @@ export class DashboardComponent implements OnInit {
   getSingers(): void {
     //this won't come up much, using memory for now to populate some init data
     this.singerService.getSingers()
-      .subscribe(singers => this.singers = singers);
+      .subscribe(singers => {
+        this.singers = singers
+      });
   }
   
   getSlips(): void {
@@ -47,13 +49,16 @@ export class DashboardComponent implements OnInit {
   }
 
   addSlip(slipToAdd: Slip): void {
+    console.log('dashboard adding slip', slipToAdd)
     const lastPosition = Math.max(...this.slips.map(obj => obj.position));
-    slipToAdd.position = lastPosition + 1;
+    slipToAdd.position = lastPosition ? lastPosition + 1 : 1;
+
     this.slipService.addSlip(slipToAdd).subscribe((slip) => {
+      console.log(slip);
       this.slips.push(slip);
       if(this.isAutoBalanceQueue) {
-      this.balanceQueue();
-    }
+        this.balanceQueue();
+      }
     });
   }
 
@@ -66,7 +71,7 @@ export class DashboardComponent implements OnInit {
   }
   updateSlips(slips: any): void {
     this.slips = slips;
-    console.log('emit caught')
+    //console.log('emit caught')
     if(this.isAutoBalanceQueue) {
       this.balanceQueue();
     }

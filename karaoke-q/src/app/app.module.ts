@@ -43,7 +43,9 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     FormsModule,
     HttpClientModule,
     HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataService, { dataEncapsulation: false }
+      InMemoryDataService, { 
+        dataEncapsulation: false,
+        passThruUnknownUrl: true }
     ),
     NgbModule,
     FontAwesomeModule,

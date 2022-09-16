@@ -12,7 +12,7 @@ import { LogsService } from './logs.service';
 })
 export class SongService {
 
-  private songsUrl = 'api/songs';  //web api
+  private songsUrl = 'http://localhost:3000/songs';  //web api
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -23,50 +23,64 @@ export class SongService {
   constructor(private logsService: LogsService, private http: HttpClient) { }
 
   /* POST */
-  addSong(song: Song): Observable<Song> {
-    return this.http.post<Song>(this.songsUrl, song, this.httpOptions)
+  addSongs(songs: Song[]): Observable<Song[]> {
+    return this.http.post<Song[]>(this.songsUrl, songs, this.httpOptions)
       .pipe(
-        tap((newSong: Song) => this.log(`added song w/ id=${newSong.id}`)),
-        catchError(this.handleError<Song>('addSong'))
+        tap((newSongs: Song[]) => this.log(`added songs`)),
+        catchError(this.handleError<Song[]>('addSong'))
       );
   }
 
   /* SEARCH */
   searchSongs(term: string): Observable<Song[]> {
-    if(!term.trim()) {
-      //no search term, no serach results
+    if (!term.trim()) {
+      // if not search term, return empty song array.
       return of([]);
     }
-    let byTitle = this.http.get<Song[]>(`${this.songsUrl}/?title=${term}`);
-    let byArtist = this.http.get<Song[]>(`${this.songsUrl}/?artist=${term}`);
-
-    //TODO: do this on the back end, this is... a thing
-    return forkJoin(
-      [
-        byTitle, 
-        byArtist
-      ]
-    ).pipe (
-        map(([byTitleArray, byArtistArray]) =>  [...byTitleArray, ...byArtistArray]),
-        
-        // Emit each item individually
-        mergeAll(),
-
-        // Group by their id
-        groupBy(o => o.id),
-
-        // For each separate group, reduce to one
-        mergeMap(
-          grp$ => grp$.pipe(
-            reduce((song) => song),
-          ),
-        ),
-
-        // At the end, collect all the objects in an array
-        toArray(),
-        
-    )
+    const searchUrl = `${this.songsUrl}/search?searchTerm=${term}`;
+    return this.http.get<Song[]>(searchUrl).pipe(
+      tap(x => x.length ?
+         this.log(`found songs matching "${term}"`) :
+         this.log(`no songs matching "${term}"`)),
+      catchError(this.handleError<Song[]>('searchSongs', []))
+    );
   }
+
+  // searchSongs(term: string): Observable<Song[]> {
+  //   if(!term.trim()) {
+  //     //no search term, no serach results
+  //     return of([]);
+  //   }
+  //   let byTitle = this.http.get<Song[]>(`${this.songsUrl}/?title=${term}`);
+  //   let byArtist = this.http.get<Song[]>(`${this.songsUrl}/?artist=${term}`);
+
+  //   //TODO: do this on the back end, this is... a thing
+  //   return forkJoin(
+  //     [
+  //       byTitle, 
+  //       byArtist
+  //     ]
+  //   ).pipe (
+  //       map(([byTitleArray, byArtistArray]) =>  [...byTitleArray, ...byArtistArray]),
+        
+  //       // Emit each item individually
+  //       mergeAll(),
+
+  //       // Group by their id
+  //       groupBy(o => o.id),
+
+  //       // For each separate group, reduce to one
+  //       mergeMap(
+  //         grp$ => grp$.pipe(
+  //           reduce((song) => song),
+  //         ),
+  //       ),
+
+  //       // At the end, collect all the objects in an array
+  //       toArray(),
+        
+  //   )
+  // }
 
   /** Log a SlipService message with the MessageService */
   private log(message: string) {
