@@ -30,11 +30,12 @@ export class UpdateLibraryComponent implements OnInit {
           this.submitNewSong();
           
         }
-        this.validSong = false;
-        this.newSong = {} as Song;
-        this.validatingSong = false;
+        
         
       }
+      this.validSong = false;
+      this.newSong = {} as Song;
+      this.validatingSong = false;
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;

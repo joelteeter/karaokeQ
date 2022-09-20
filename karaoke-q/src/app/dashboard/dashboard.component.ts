@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Singer } from '../models/singer';
 import { SingerService } from '../services/singer.service';
 
 import { Slip } from '../models/slip';
 import { SlipService } from '../services/slip.service';
+import { SongService } from '../services/song.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,12 +18,25 @@ export class DashboardComponent implements OnInit {
   slips: Slip[] = [];
   newSlip: any = null;
   isAutoBalanceQueue = true;
+  closeResult = '';
 
-  constructor(private singerService: SingerService, private slipService: SlipService) { }
+  constructor(private singerService: SingerService, private slipService: SlipService, private songService: SongService, private modalService: NgbModal) { }
 
   ngOnInit(): void {
     this.getSingers();
     this.getSlips();
+  }
+
+  open(content:any) {
+
+    this.modalService.open(content, {
+      ariaLabelledBy: 'modal-basic-title',
+      scrollable: true,
+    }).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
   }
 
   getSingers(): void {
@@ -87,6 +101,12 @@ export class DashboardComponent implements OnInit {
         this.slips.shift();
       });
     }
+    if(e === 'requestValidation') {
+      if(this.slips[0] && this.slips[0].song) {
+        this.slips[0].song.validation_requested = true;
+        this.songService.updateSong(this.slips[0].song).subscribe();
+      }
+    }
   }
 
   balanceQueue(): void {
@@ -137,6 +157,16 @@ export class DashboardComponent implements OnInit {
     //set the queue to the new queue
     this.slips = newQueue;
     
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
   }
 
 }

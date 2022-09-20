@@ -4,4 +4,5 @@ export interface Song {
 	artist: string;
 	runTime: number;
 	embedurl: string;
+	validation_requested: boolean;
 }

@@ -14,11 +14,18 @@ export class VideoComponentComponent implements OnInit {
   
   apiLoaded:boolean = false;
   closeResult = '';
+  screenWidth = 0;
+  playerWidth = 0;
 
   constructor(private modalService: NgbModal) { }
 
   ngOnInit(): void {
-    console.log(this.slipVideo);
+    this.screenWidth = window.innerWidth;
+    if(this.screenWidth < 992) {
+      this.playerWidth = this.screenWidth - 15;
+    } else {
+      this.playerWidth = 640;
+    }
     if (!this.apiLoaded) {
       // This code loads the IFrame Player API code asynchronously, according to the instructions at
       // https://developers.google.com/youtube/iframe_api_reference#Getting_Started
@@ -26,12 +33,17 @@ export class VideoComponentComponent implements OnInit {
       tag.src = 'https://www.youtube.com/iframe_api';
       document.body.appendChild(tag);
       this.apiLoaded = true;
-      console.log(tag);
     }
 
     // (window as any).onYouTubeIframeAPIReady = (something:any) => {
     //   console.log('its ready?');
     // }
+  }
+
+  public onResizeHandler(event:any): void {
+    //TODO: figure out a way to resize the iframe based on changing widths
+    this.screenWidth = event.target.innerWidth;
+    //console.log(event.target.innerHeight);
   }
 
   open(content:any) {
@@ -48,11 +60,15 @@ export class VideoComponentComponent implements OnInit {
     });
   }
 
+  requestValidation():void {
+    this.videoPlayerStatus.emit('requestValidation');
+  }
+
   youTubeReady(e:any) {
     console.log(e);
     console.log('player is ready now playing ', e.target.videoTitle);
     console.log('playing song now');
-    e.target.playVideo();
+    //e.target.playVideo();
     
   }
   youTubeStateChange(e:any) {
@@ -95,7 +111,7 @@ export class VideoComponentComponent implements OnInit {
       
       case 5 :
         console.log('player is video cued ', e.target.videoTitle);
-        e.target.playVideo();
+        //e.target.playVideo();
         break;
       
       default: 

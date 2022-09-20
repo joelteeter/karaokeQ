@@ -22,6 +22,15 @@ export class SongService {
 
   constructor(private logsService: LogsService, private http: HttpClient) { }
 
+  /* GET */
+  getSongs(): Observable<Song[]> {    
+    return this.http.get<Song[]>(this.songsUrl)
+      .pipe(
+          tap(_ => this.log('fetched songs')),
+          catchError(this.handleError<Song[]>('getSongs', []))
+        );
+  }
+
   /* POST */
   addSongs(songs: Song[]): Observable<Song[]> {
     return this.http.post<Song[]>(this.songsUrl, songs, this.httpOptions)
@@ -36,6 +45,26 @@ export class SongService {
         tap((newSong: Song) => this.log(`added song w/ id=${newSong.id}`)),
         catchError(this.handleError<Song>('addSong'))
       );
+  }
+
+  /* PUT */
+  updateSong(song: Song): Observable<any> {
+    const url = `${this.songsUrl}/${song.id}`;
+    return this.http.put(url, song, this.httpOptions)
+      .pipe(        
+        tap(_ => this.log(`updated song id=${song.id}`)),
+        catchError(this.handleError<any>('updateSong'))
+      );
+  }
+
+  /* DELETE */
+  deleteSong(id: number): Observable<Song> {
+    const url = `${this.songsUrl}/${id}`;
+
+    return this.http.delete<Song>(url, this.httpOptions).pipe(
+      tap(_ => this.log(`deleted song id=${id}`)),
+      catchError(this.handleError<Song>('deleteSong'))
+    );
   }
 
   /* SEARCH */
@@ -89,9 +118,9 @@ export class SongService {
   //   )
   // }
 
-  /** Log a SlipService message with the MessageService */
+  /** Log a SongService message with the MessageService */
   private log(message: string) {
-    this.logsService.add(`SlipService: ${message}`);
+    this.logsService.add(`SongService: ${message}`);
   }
 
 /**

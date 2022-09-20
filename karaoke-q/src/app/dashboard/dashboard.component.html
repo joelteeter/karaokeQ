@@ -1,17 +1,45 @@
 <header>
 	<div>
-		<h1 class="ms-3">Karaoke Queue</h1>
+		<h1 class="ms-3 mt-1"><span>Karaoke Queue</span>
+			
+			<button type="button" class="btn btn-outline-secondary ms-3" (click)="open(popContent)">
+			  How to use this?
+			</button>
+		</h1>
+		<ng-template #popContent let-modal>
+			<div class="modal-header">
+				<h4 class="modal-title" id="modal-basic-title">How to use this</h4>
+				<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+			</div>
+			<div class="modal-body">
+				<div><strong>How to add a new song to the library?</strong></div>
+				<div>First you'll need to find the song on YouTube, usually searching for "[song name] karaoke" will do the trick.  Then you need to copy the video ID. That's the part after the ?v= in the video's url. For example: https://www.youtube.com/watch?v=dQw4w9WgXcQ the ID is dQw4w9WgXcQ.</div>
+				<div>Now click the "Update Song Library", fill in the artist name, the song title, and past the video ID in the YouTube ID field.</div>
+				<div>Then click the "Check Song" button, you should see a message as if the song should work or not, but the best check is to see if the preview video will play.</div>
+				<div>If all is good, click the "Save" button and the song will be added to the library</div>
+				
+				<p class="mt-2 mb-0"><strong>How to add a new slip / song?</strong></p>
+				<div>Click the "New Song" button, then choose a singer and search for the song. Then click "Save".</div>
+				<p class="mt-2 mb-0"><strong>How to add a new singer?</strong></p>
+				<div>Click the "Add New Singer" button, enter the singer's name, choose a color for them, and then find a song to sing</div>
+				<p class="mt-2 mb-0"><strong>What does balancing the queue do?</strong></p>
+				<div>If "Auto Balance Queue" is checked, when a new slip/song is added it will ensure the queue is evened out and people can get their songs in fairly.  If not checked, you can click the "Balance Queue" button and it will balance the current queue</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" (click)="modal.close('Save click')">OK</button>
+			</div>
+		</ng-template>
 	</div>
 </header>
 
 <div class="container-fluid">
-	<div class="row">
-		
+	<div class="row">		
 		<div class="col-12 col-lg-3 order-2 order-lg-1 queue-col">
 			<div class="buttons-wrapper mb-3 ms-3">
-			
+				<app-manage-library [slips]="slips"></app-manage-library>
 				<app-slip-detail [singers]="singers" (newSlip)="addSlip($event)"></app-slip-detail>
 				<app-update-library></app-update-library>
+
 				<button class="btn btn-danger mt-2 mt-sm-0" (click)="balanceQueue()">Balance Queue</button>
 				<mat-checkbox [(ngModel)]="isAutoBalanceQueue" class="mt-2 mt-sm-0">Auto Balance Queue</mat-checkbox>
 			</div>
@@ -24,8 +52,12 @@
 				(singersUpdate)="updateSingers($event)"
 				(slipsUpdate)="updateSlips($event)"  
 			></app-singers>
-			<app-video-component [slipVideo]="slips" (videoPlayerStatus)="updateVideoPlayerStatus($event)"></app-video-component>
-			
+
+			<app-video-component 
+				[slipVideo]="slips" 
+				(videoPlayerStatus)="updateVideoPlayerStatus($event)"
+			></app-video-component>
+
 		</div>
 	</div>
 </div>

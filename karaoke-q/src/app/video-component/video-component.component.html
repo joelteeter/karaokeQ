@@ -1,15 +1,18 @@
-<div *ngIf="slipVideo.length > 0 ">
+<div (window:resize)="onResizeHandler($event)" *ngIf="slipVideo.length > 0 ">
 	<div *ngIf="slipVideo[0].song && slipVideo[0].song.embedurl">
+
 		<youtube-player *ngIf="slipVideo[0].song && slipVideo[0].song.embedurl" videoId={{slipVideo[0].song!.embedurl}} 
 		(ready)="youTubeReady($event)"
 		(stateChange)="youTubeStateChange($event)"
 		(error)="youTubeError($event)"
 		(apiChange)="youTubeApiChange($event)"
-
+		[width]="playerWidth"
 		></youtube-player>
+
 	</div>
 </div>
-<button (click)="open(content)" [disabled]="slipVideo.length < 2">Next Singer</button>
+<button (click)="open(content)" class="btn btn-primary" [disabled]="slipVideo.length < 2">Next Singer</button>
+<button (click)="requestValidation()" class="btn btn-danger">! Request Video Validation !</button>
 <ng-template #content let-modal>
 	<div class="modal-header">
 		<h4 class="modal-title" id="modal-basic-title">Next Singer get up here!</h4>

@@ -25,7 +25,9 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatTableModule} from '@angular/material/table';
 import { YouTubePlayerModule } from '@angular/youtube-player';
+import { ManageLibraryComponent } from './manage-library/manage-library.component';
 
 
 @NgModule({
@@ -39,7 +41,8 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
     SlipDetailComponent,
     SingersComponent,
     UpdateLibraryComponent,
-    VideoComponentComponent
+    VideoComponentComponent,
+    ManageLibraryComponent
   ],
   imports: [
     BrowserModule,
@@ -58,6 +61,7 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
     BrowserAnimationsModule,
     DragDropModule,
     MatCheckboxModule,
+    MatTableModule,
     YouTubePlayerModule,
   ],
   providers: [],
