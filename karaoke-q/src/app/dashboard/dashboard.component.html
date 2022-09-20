@@ -40,7 +40,7 @@
 				<app-slip-detail [singers]="singers" (newSlip)="addSlip($event)"></app-slip-detail>
 				<app-update-library></app-update-library>
 
-				<button class="btn btn-danger mt-2" (click)="balanceQueue()">Balance Queue</button>
+				<button class="btn btn-danger m-2" (click)="balanceQueue()">Balance Queue</button>
 				<mat-checkbox [(ngModel)]="isAutoBalanceQueue" class="mt-2 mt-sm-0">Auto Balance Queue</mat-checkbox>
 			</div>
 			<app-slips [slips]="slips" (updatedSlips)="updateSlips($event)"></app-slips>
