@@ -3,5 +3,5 @@ export interface Song {
 	title: string;
 	artist: string;
 	runTime: number;
-	embedUrl: string;
+	embedurl: string;
 }

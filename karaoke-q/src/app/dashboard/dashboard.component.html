@@ -7,7 +7,7 @@
 <div class="container-fluid">
 	<div class="row">
 		
-		<div class="col-12 col-lg-6 order-2 order-lg-1 queue-col">
+		<div class="col-12 col-lg-3 order-2 order-lg-1 queue-col">
 			<div class="buttons-wrapper mb-3 ms-3">
 			
 				<app-slip-detail [singers]="singers" (newSlip)="addSlip($event)"></app-slip-detail>
@@ -17,13 +17,14 @@
 			</div>
 			<app-slips [slips]="slips" (updatedSlips)="updateSlips($event)"></app-slips>
 		</div>
-		<div class="col-12 col-lg-6 order-1 order-lg-2 singers-col">
+		<div class="col-12 col-lg-9 order-1 order-lg-2 singers-col">
 			<app-singers 
 				[singers]="singers" 
 				[slips]="slips" 
 				(singersUpdate)="updateSingers($event)"
 				(slipsUpdate)="updateSlips($event)"  
 			></app-singers>
+			<app-video-component [slipVideo]="slips" (videoPlayerStatus)="updateVideoPlayerStatus($event)"></app-video-component>
 			
 		</div>
 	</div>

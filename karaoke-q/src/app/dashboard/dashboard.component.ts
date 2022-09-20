@@ -49,10 +49,13 @@ export class DashboardComponent implements OnInit {
   }
 
   addSlip(slipToAdd: Slip): void {
-    console.log('dashboard adding slip', slipToAdd)
-    const lastPosition = Math.max(...this.slips.map(obj => obj.position));
+    let lastPosition = 0;
+    if(this.slips.length > 0) {
+      lastPosition = Math.max(...this.slips.map(obj => obj.position));
+    }
+    
     slipToAdd.position = lastPosition ? lastPosition + 1 : 1;
-
+    console.log('dashboard adding slip', slipToAdd)
     this.slipService.addSlip(slipToAdd).subscribe((slip) => {
       console.log(slip);
       this.slips.push(slip);
@@ -74,6 +77,15 @@ export class DashboardComponent implements OnInit {
     //console.log('emit caught')
     if(this.isAutoBalanceQueue) {
       this.balanceQueue();
+    }
+  }
+
+  updateVideoPlayerStatus(e: any): void {
+    console.log('updating video player status: ', e);
+    if(e === 'nextSinger') {
+      this.slipService.deleteSlip(Number(this.slips[0].id)).subscribe( () => {
+        this.slips.shift();
+      });
     }
   }
 

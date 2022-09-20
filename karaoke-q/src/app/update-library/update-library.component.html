@@ -6,23 +6,37 @@
 		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
 	</div>
 	<div class="modal-body">
-		<form>
+
 			<div class="mb-3">
 
-
-				<input type="file" class="file-input" accept=".csv" (change)="onFileSelected($event)" #fileUpload>
-				<div class="file-upload">
-					{{fileName || "No file uploaded yet."}}
-					<button mat-mini-fab color="primary" class="upload-btn" (click)="fileUpload.click()">
-						<fa-icon [icon]="faFile"></fa-icon>
-					</button>
+				<div>
+					<label for="artist">Artist: </label>
+					<input id="artist" [(ngModel)]="newSong.artist" placeholder="artist">
 				</div>
-
+				<div>
+					<label for="title">Song Title: </label>
+					<input id="title" [(ngModel)]="newSong.title" placeholder="title">
+				</div>
+				<div>
+					<label for="embedurl">YouTube ID:</label>
+					<input id="embedurl" [(ngModel)]="newSong.embedurl" placeholder="5bCwue1d9Js">
+				</div>
 			</div>
-		</form>
+			<button (click)="checkSong()">Check Song</button>
+			<div >{{validSong ? 'This song should work' : 'This song should not work'}}</div>
+			<div *ngIf="newSong.embedurl && validatingSong">
+				
+				<youtube-player videoId={{newSong.embedurl}} 
+				[height]="100"
+				[width]="100" 
+				(ready)="youTubeReady($event)"
+				></youtube-player>
+				
+			</div>
+			<div>If you see the video preview load normally, click save to add the song to the library.  If you see an error, click cancel to not add the song to the library.</div>
 	</div>
 	<div class="modal-footer">
-		<button type="button" class="btn btn-primary" (click)="modal.close('Save click')">Save</button>
+		<button [disabled]="(!newSong.artist || !newSong.title || !newSong.embedurl || !validSong)" type="button" class="btn btn-primary" (click)="modal.close('Save click')">Save</button>
 		<button type="button" class="btn btn-danger" (click)="modal.close('Cross click')">Cancel</button>
 	</div>
 </ng-template>	

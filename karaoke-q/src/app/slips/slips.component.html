@@ -17,7 +17,7 @@
 
 			<h5 class="card-title">{{slip.song ? slip.song.title : ''}}</h5>
 			<h5 class="card-title">{{slip.song ? slip.song.artist : ''}}</h5>
-			<p class="card-text">{{indexOfElement < 1 ? slip.song.runTime : 'tbd'}}</p>
+			<p class="card-text">{{slip.song ? slip.song.embedurl : ''}}</p>
 			<app-slip-detail [slip]="slip" (newSlip)="editSlip($event)"></app-slip-detail>
 			<button (click)="deleteSlip(slip)" type="button" class="btn btn-danger">
 				<fa-icon [icon]="faTrashAlt"></fa-icon>

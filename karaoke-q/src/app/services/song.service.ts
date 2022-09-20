@@ -30,6 +30,13 @@ export class SongService {
         catchError(this.handleError<Song[]>('addSong'))
       );
   }
+  addSong(song: Song): Observable<Song> {
+    return this.http.post<Song>(this.songsUrl, song, this.httpOptions)
+      .pipe(
+        tap((newSong: Song) => this.log(`added song w/ id=${newSong.id}`)),
+        catchError(this.handleError<Song>('addSong'))
+      );
+  }
 
   /* SEARCH */
   searchSongs(term: string): Observable<Song[]> {
