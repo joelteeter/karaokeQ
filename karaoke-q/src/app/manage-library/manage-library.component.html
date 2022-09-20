@@ -1,4 +1,4 @@
-<button type="button" (click)="open(content)" class="btn btn-primary">Manage Song Library</button>
+<button type="button" (click)="open(content)" class="btn btn-primary m-2">Manage Song Library</button>
 
 <ng-template #content let-modal>
 	<div class="modal-header">
@@ -42,8 +42,7 @@
 				</table>
 	</div>
 	<div class="modal-footer">
-		<button type="button" class="btn btn-primary" (click)="modal.close('Save click')">Save</button>
-		<button type="button" class="btn btn-danger" (click)="modal.close('Cross click')">Cancel</button>
+		<button type="button" class="btn btn-primary" (click)="modal.close('Save click')">Done</button>
 	</div>
 </ng-template>
 
