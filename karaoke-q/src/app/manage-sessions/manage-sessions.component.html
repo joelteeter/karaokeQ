@@ -1,0 +1,14 @@
+<div *ngFor="let session of sessions" class=" session card">
+	<div class="card-body">
+		<div class="session-name">
+			<a routerLink="/session/{{session.id}}">
+				<h2>
+					<span>{{session.name}}</span>
+				</h2>
+			</a>
+			<button (click)="delete(session)" type="button" class="btn btn-danger small">
+				<fa-icon [icon]="faTrashAlt"></fa-icon>
+			</button>
+		</div>
+	</div>
+</div>

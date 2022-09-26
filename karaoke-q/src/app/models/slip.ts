@@ -3,6 +3,7 @@ import { Song } from './song';
 
 export interface Slip {
 	id?: number;
+	sessionId: number;
 	singer?: Singer;
 	song?: Song;	
 	isCollapsed: boolean;

@@ -18,6 +18,7 @@ export class SingersComponent implements OnInit {
 
   @Input() singers: Singer[] = [];
   @Input() slips: Slip[] = [];
+  @Input() sessionId: number = 0;
 
   @Output() singersUpdate: EventEmitter<Singer[]> = new EventEmitter<Singer[]>();
   @Output() slipsUpdate: EventEmitter<Slip[]> = new EventEmitter<Slip[]>();
@@ -69,7 +70,8 @@ export class SingersComponent implements OnInit {
     } else {
       this.singerService.addSinger(singer).subscribe((singerResult) => {
         this.singers.push(singerResult);
-        this.addSlip(singer);
+
+        this.addSlip(singerResult, singer.song);
       })
     }
     this.editting = false;
@@ -95,12 +97,21 @@ export class SingersComponent implements OnInit {
     }));
   }
 
-  addSlip(singer: any) {
+  addSlip(singer: any, song: any) {
     const lastPosition = Math.max(...this.slips.map(obj => obj.position));
-    this.slipService.addSlip({ singer: singer, song: singer.song, isCollapsed: true, position: lastPosition+1}).subscribe((slip) => {
-      this.slips.push(slip);
-      this.slipsUpdate.emit(this.slips);
-      } )
+    if(this.sessionId > 0 ) {
+      this.slipService.addSlip(
+        { 
+          sessionId: this.sessionId, 
+          singer: singer, 
+          song: song, 
+          isCollapsed: true, 
+          position: lastPosition+1
+        }).subscribe((slip) => {
+        this.slips.push(slip);
+        this.slipsUpdate.emit(this.slips);
+        } )
+    }
     
   }
 

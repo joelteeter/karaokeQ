@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import { Slip } from '../models/slip';
@@ -24,8 +24,13 @@ export class SlipService {
     private http: HttpClient) { }
 
   /* GET */
-  getSlips(): Observable<Slip[]> {    
-    return this.http.get<Slip[]>(this.slipsUrl)
+  getSlips(sessionID?: number): Observable<Slip[]> {   
+    console.log('getting slips for session: ',sessionID);
+    let params = new HttpParams();
+    if(sessionID) {
+      params = params.append('sessionid', sessionID);
+    }
+    return this.http.get<Slip[]>(this.slipsUrl, {params: params})
       .pipe(
           tap(_ => this.log('fetched slips')),
           catchError(this.handleError<Slip[]>('getSlips', []))

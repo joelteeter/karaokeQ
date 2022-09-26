@@ -46,17 +46,20 @@
 			<app-slips [slips]="slips" (updatedSlips)="updateSlips($event)"></app-slips>
 		</div>
 		<div class="col-12 col-lg-9 order-1 order-lg-2 singers-col">
-			<app-singers 
-				[singers]="singers" 
-				[slips]="slips" 
-				(singersUpdate)="updateSingers($event)"
-				(slipsUpdate)="updateSlips($event)"  
-			></app-singers>
-
 			<app-video-component 
 				[slipVideo]="slips" 
 				(videoPlayerStatus)="updateVideoPlayerStatus($event)"
 			></app-video-component>
+			<div class="mt-3">
+				<app-singers 
+					[sessionId]="sessionId" 
+					[singers]="singers" 
+					[slips]="slips" 
+					(singersUpdate)="updateSingers($event)"
+					(slipsUpdate)="updateSlips($event)"  
+				></app-singers>
+			</div>
+			
 
 		</div>
 	</div>

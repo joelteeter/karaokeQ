@@ -28,6 +28,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatTableModule} from '@angular/material/table';
 import { YouTubePlayerModule } from '@angular/youtube-player';
 import { ManageLibraryComponent } from './manage-library/manage-library.component';
+import { SessionComponent } from './session/session.component';
+import { ManageSessionsComponent } from './manage-sessions/manage-sessions.component';
 
 
 @NgModule({
@@ -42,7 +44,9 @@ import { ManageLibraryComponent } from './manage-library/manage-library.componen
     SingersComponent,
     UpdateLibraryComponent,
     VideoComponentComponent,
-    ManageLibraryComponent
+    ManageLibraryComponent,
+    SessionComponent,
+    ManageSessionsComponent
   ],
   imports: [
     BrowserModule,
