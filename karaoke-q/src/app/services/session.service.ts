@@ -14,7 +14,8 @@ import { LogsService } from './logs.service';
 })
 export class SessionService {
 
-  private sessionsUrl = 'http://localhost:3000/sessions';  //web api
+  //private sessionsUrl = 'http://localhost:3000/sessions';  //localhost api
+  private sessionsUrl = 'https://karaoke-q-api.herokuapp.com/sessions';  //web api
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
