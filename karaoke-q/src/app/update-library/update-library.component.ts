@@ -3,6 +3,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { faFile } from '@fortawesome/free-solid-svg-icons';
 import { Song } from '../models/song';
 import { SongService } from '../services/song.service';
+import { YoutubeService } from '../services/youtube.service';
 
 @Component({
   selector: 'app-update-library',
@@ -11,13 +12,12 @@ import { SongService } from '../services/song.service';
 })
 export class UpdateLibraryComponent implements OnInit {
 
+  validSong:boolean = false;
+  validatingSong:boolean = false;
   closeResult = '';
-  faFile = faFile;
+  newSong: Song = {} as Song;
 
-  fileName: string = '';
-  file: any = null;
-
-  constructor(private songService: SongService, private modalService: NgbModal) { }
+  constructor(private songService: SongService, private youtubeService: YoutubeService, private modalService: NgbModal) { }
 
   ngOnInit(): void {
   }
@@ -26,16 +26,41 @@ export class UpdateLibraryComponent implements OnInit {
 
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       if(result === 'Save click') {
+        if(this.newSong.artist && this.newSong.title && this.newSong.embedurl) {
+          this.submitNewSong();
+          
+        }
         
-            //this.parseCSV(';');
-            this.processFile();
-
         
       }
+      this.validSong = false;
+      this.newSong = {} as Song;
+      this.validatingSong = false;
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
+  }
+
+  checkSong(): void {
+    this.validatingSong = true;
+    
+  }
+  youTubeReady(e:any) {
+    console.log(e);
+    console.log('checking...');
+    console.log(e.target.playerInfo.videoData)
+    if(e.target.playerInfo.videoData.isPlayable) {
+      this.validSong = true;
+    } else {
+      this.validSong = false;
+      //this.validatingSong = false;
+    }
+    
+  }
+
+  submitNewSong(): void {
+    this.songService.addSong(this.newSong).subscribe();
   }
 
   private getDismissReason(reason: any): string {
@@ -46,66 +71,6 @@ export class UpdateLibraryComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
-  }
-
-  onFileSelected(event: any): void {
-    const file: File = event.target.files[0];
-    if(file) {
-      this.fileName = file.name;
-      this.file = file;
-
-    }
-  }
-
-  readFileAsync(file:any) {
-    return new Promise((resolve, reject) => {
-      let reader = new FileReader();
-
-      reader.onload = () => {
-        resolve(reader.result);
-      };
-
-      reader.onerror = reject;
-
-      reader.readAsText(file);
-    })
-  }
-
-  async processFile() {
-    try {
-      let file = this.file;
-      let contentText = await this.readFileAsync(file);
-      this.parseCSV(';', contentText);
-    } catch(err) {
-      console.log(err);
-    }
-  }
-
-  parseCSV(delimiter: string, str: any): any {
-    let songs: any = [];
-
-    const headers = str.slice(0, str.indexOf('\n')).split(delimiter);
-    const data = str.slice(str.indexOf('\n') + 1).split('\n');
-
-    const arr = data.map((row: any) => {
-      const values = row.split(delimiter);
-      const el = headers.reduce((obj:any, header:any, index:any) => {
-        obj[header] = values[index];
-
-        return obj;
-      }, {}
-      );
-      return el;
-    });
-    //TODO: let 'er rip, for now just 100 songs.
-    const songCount = arr.length < 100 ? arr.length : 100;
-    for(let i = 0; i < songCount; i ++) {
-      let newSong = [arr[i]['Title'].toString().replaceAll('\"',''), arr[i]['Artist'].replaceAll('\"','')];
-      songs.push(newSong);
-    }
-    this.songService.addSongs(songs).subscribe( (res:any) => console.log(res));
-
-    
   }
 
 }

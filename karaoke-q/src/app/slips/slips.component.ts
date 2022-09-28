@@ -24,6 +24,7 @@ export class SlipsComponent implements OnInit {
   constructor(private slipService: SlipService) { }
 
   ngOnInit(): void {
+    console.log(this.slips);
   }
 
   deleteSlip(slip: Slip): void {

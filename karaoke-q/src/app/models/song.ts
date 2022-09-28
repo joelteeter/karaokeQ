@@ -3,4 +3,6 @@ export interface Song {
 	title: string;
 	artist: string;
 	runTime: number;
+	embedurl: string;
+	validation_requested: boolean;
 }

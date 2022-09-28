@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Singer } from '../models/singer';
 import { SingerService } from '../services/singer.service';
 
 import { Slip } from '../models/slip';
 import { SlipService } from '../services/slip.service';
+import { SongService } from '../services/song.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,16 +15,37 @@ import { SlipService } from '../services/slip.service';
 })
 export class DashboardComponent implements OnInit {
 
+  sessionId: any;
   singers: Singer[] = [];
   slips: Slip[] = [];
   newSlip: any = null;
   isAutoBalanceQueue = true;
+  closeResult = '';
 
-  constructor(private singerService: SingerService, private slipService: SlipService) { }
+  constructor(private singerService: SingerService, private slipService: SlipService, private songService: SongService, private modalService: NgbModal, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.route.paramMap.subscribe( (params: ParamMap) =>
+      {
+        const thing = params.get('id');
+        this.sessionId = thing;
+        console.log(this.sessionId);
+      }
+    );
     this.getSingers();
     this.getSlips();
+  }
+
+  open(content:any) {
+
+    this.modalService.open(content, {
+      ariaLabelledBy: 'modal-basic-title',
+      scrollable: true,
+    }).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
   }
 
   getSingers(): void {
@@ -35,7 +58,7 @@ export class DashboardComponent implements OnInit {
   
   getSlips(): void {
     //this won't come up much, using memory for now to populate some init data
-    this.slipService.getSlips()
+    this.slipService.getSlips(this.sessionId)
       .subscribe(slips => {
         this.slips = [];
         slips.forEach(slip => {
@@ -49,10 +72,16 @@ export class DashboardComponent implements OnInit {
   }
 
   addSlip(slipToAdd: Slip): void {
-    console.log('dashboard adding slip', slipToAdd)
-    const lastPosition = Math.max(...this.slips.map(obj => obj.position));
+    let lastPosition = 0;
+    if(this.slips.length > 0) {
+      console.log('wtf this is the array to search', this.slips);
+      lastPosition = Math.max(...this.slips.map(obj => obj.position));
+    }
+    console.log(lastPosition);
+    
     slipToAdd.position = lastPosition ? lastPosition + 1 : 1;
-
+    slipToAdd.sessionId = this.sessionId;
+    console.log('dashboard adding slip', slipToAdd)
     this.slipService.addSlip(slipToAdd).subscribe((slip) => {
       console.log(slip);
       this.slips.push(slip);
@@ -74,6 +103,21 @@ export class DashboardComponent implements OnInit {
     //console.log('emit caught')
     if(this.isAutoBalanceQueue) {
       this.balanceQueue();
+    }
+  }
+
+  updateVideoPlayerStatus(e: any): void {
+    console.log('updating video player status: ', e);
+    if(e === 'nextSinger') {
+      this.slipService.deleteSlip(Number(this.slips[0].id)).subscribe( () => {
+        this.slips.shift();
+      });
+    }
+    if(e === 'requestValidation') {
+      if(this.slips[0] && this.slips[0].song) {
+        this.slips[0].song.validation_requested = true;
+        this.songService.updateSong(this.slips[0].song).subscribe();
+      }
     }
   }
 
@@ -125,6 +169,16 @@ export class DashboardComponent implements OnInit {
     //set the queue to the new queue
     this.slips = newQueue;
     
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
   }
 
 }

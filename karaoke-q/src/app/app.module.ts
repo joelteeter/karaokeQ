@@ -17,6 +17,7 @@ import { SongSearchComponent } from './song-search/song-search.component';
 import { SlipDetailComponent } from './slip-detail/slip-detail.component';
 import { SingersComponent } from './singers/singers.component';
 import { UpdateLibraryComponent } from './update-library/update-library.component';
+import { VideoComponentComponent } from './video-component/video-component.component';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -24,6 +25,12 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatTableModule} from '@angular/material/table';
+import { YouTubePlayerModule } from '@angular/youtube-player';
+import { ManageLibraryComponent } from './manage-library/manage-library.component';
+import { SessionComponent } from './session/session.component';
+import { ManageSessionsComponent } from './manage-sessions/manage-sessions.component';
+
 
 @NgModule({
   declarations: [
@@ -35,7 +42,11 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     SongSearchComponent,
     SlipDetailComponent,
     SingersComponent,
-    UpdateLibraryComponent
+    UpdateLibraryComponent,
+    VideoComponentComponent,
+    ManageLibraryComponent,
+    SessionComponent,
+    ManageSessionsComponent
   ],
   imports: [
     BrowserModule,
@@ -54,6 +65,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     BrowserAnimationsModule,
     DragDropModule,
     MatCheckboxModule,
+    MatTableModule,
+    YouTubePlayerModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

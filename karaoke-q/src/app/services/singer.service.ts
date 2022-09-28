@@ -14,7 +14,8 @@ import { LogsService } from './logs.service';
 })
 export class SingerService {
 
-  private singersUrl = 'http://localhost:3000/singers';  //web api
+  //private singersUrl = 'http://localhost:3000/singers';  //web api
+  private singersUrl = 'https://karaoke-q-api.herokuapp.com/singers';  //web api
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
