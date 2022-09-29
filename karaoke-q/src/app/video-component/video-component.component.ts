@@ -10,6 +10,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 export class VideoComponentComponent implements OnInit {
   @ViewChild('content') content!: ElementRef;
   @Input() slipVideo: any;
+  @Input() settings: any;
   @Output() videoPlayerStatus: EventEmitter<any> = new EventEmitter<any>();
   
   apiLoaded:boolean = false;
@@ -67,8 +68,10 @@ export class VideoComponentComponent implements OnInit {
   youTubeReady(e:any) {
     console.log(e);
     console.log('player is ready now playing ', e.target.videoTitle);
-    console.log('playing song now');
-    //e.target.playVideo();
+    console.log('playing song now', this.settings.autoPlay);
+    if(this.settings.autoPlay) {
+      e.target.playVideo();
+    }
     
   }
   youTubeStateChange(e:any) {
@@ -111,7 +114,9 @@ export class VideoComponentComponent implements OnInit {
       
       case 5 :
         console.log('player is video cued ', e.target.videoTitle);
-        //e.target.playVideo();
+        if(this.settings.autoPlay) {
+          e.target.playVideo();
+        }
         break;
       
       default: 

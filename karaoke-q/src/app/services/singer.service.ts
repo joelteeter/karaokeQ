@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import { Singer } from '../models/singer';
@@ -14,8 +14,8 @@ import { LogsService } from './logs.service';
 })
 export class SingerService {
 
-  //private singersUrl = 'http://localhost:3000/singers';  //web api
-  private singersUrl = 'https://karaoke-q-api.herokuapp.com/singers';  //web api
+  private singersUrl = 'http://localhost:3000/singers';  //web api
+  //private singersUrl = 'https://karaoke-q-api.herokuapp.com/singers';  //web api
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -25,8 +25,12 @@ export class SingerService {
     private http: HttpClient) { }
 
   /* GET */
-  getSingers(): Observable<Singer[]> {  
-    return this.http.get<Singer[]>(this.singersUrl)
+  getSingers(sessionId: any): Observable<Singer[]> {
+    let params = new HttpParams();
+    if(sessionId) {
+      params = params.append('sessionid', sessionId);
+    }  
+    return this.http.get<Singer[]>(this.singersUrl, {params: params})
       .pipe(
           tap(_ => this.log('fetched singers')),
           catchError(this.handleError<Singer[]>('getSingers', []))
@@ -53,8 +57,9 @@ export class SingerService {
   }
 
   /* POST */
-  addSinger(singer: Singer): Observable<Singer> {
-    return this.http.post<Singer>(this.singersUrl, singer, this.httpOptions)
+  addSinger(singer: Singer, sessionId:any ): Observable<Singer> {
+    singer.sessionId = sessionId;
+    return this.http.post<Singer>(this.singersUrl, singer, this.httpOptions,)
       .pipe(
         tap((newSinger: Singer) => this.log(`added singer w/ id=${newSinger.id}`)),
         catchError(this.handleError<Singer>('addSinger'))
@@ -67,6 +72,17 @@ export class SingerService {
 
     return this.http.delete<Singer>(url, this.httpOptions).pipe(
       tap(_ => this.log(`deleted singer id=${id}`)),
+      catchError(this.handleError<Singer>('deleteSinger'))
+    );
+  }
+  deleteSessionSingers(sessionId: number): Observable<Singer> {
+    let params = new HttpParams();
+    if(sessionId) {
+      params = params.append('sessionid', sessionId);    
+      
+    }
+    return this.http.delete<Singer>(this.singersUrl, {params: params}).pipe(
+      tap(_ => this.log(`deleted singer session_id=${sessionId}`)),
       catchError(this.handleError<Singer>('deleteSinger'))
     );
   }

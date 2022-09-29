@@ -9,7 +9,7 @@ import { LogsService } from './logs.service';
   providedIn: 'root'
 })
 export class YoutubeService {
-
+  //TODO: remove this, not being used failed experiment
   private ytUrl = 'https://www.youtube.com/embed/';  //web api  
 
   httpOptions = {
@@ -25,7 +25,6 @@ export class YoutubeService {
   /* this didn't work TODO: get rid of this */
   checkSong(videoId: any) {
     const checkUrl = this.ytUrl+videoId;
-    console.log(checkUrl);
     return this.http.post<any>(checkUrl, this.httpOptions)
       .pipe(
         tap((newSongs: any) => this.log(`added songs`)),

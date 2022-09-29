@@ -11,8 +11,10 @@
 
 	</div>
 </div>
-<button (click)="open(content)" class="btn btn-primary" [disabled]="slipVideo.length < 2">Next Singer</button>
-<button (click)="requestValidation()" class="btn btn-danger">! Request Video Validation !</button>
+<div class="player-buttons-group d-flex justify-content-start p-2">
+	<button (click)="open(content)" class="btn btn-primary" [disabled]="slipVideo.length < 2">Next Singer</button>
+	<button (click)="requestValidation()" class="btn btn-danger">! Request Video Validation !</button>
+</div>
 <ng-template #content let-modal>
 	<div class="modal-header">
 		<h4 class="modal-title" id="modal-basic-title">Next Singer get up here!</h4>

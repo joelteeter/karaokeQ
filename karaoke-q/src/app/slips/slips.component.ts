@@ -24,7 +24,7 @@ export class SlipsComponent implements OnInit {
   constructor(private slipService: SlipService) { }
 
   ngOnInit(): void {
-    console.log(this.slips);
+
   }
 
   deleteSlip(slip: Slip): void {
@@ -47,21 +47,33 @@ export class SlipsComponent implements OnInit {
 
   }
   drop(event: CdkDragDrop<string[]>) {
-    if(event.previousIndex < event.currentIndex) {
-      this.slips[event.previousIndex].position = this.slips[event.currentIndex].position + 1;
-      for(let i=event.previousIndex; i <= event.currentIndex; i ++) {
-        this.slips[i].position -= 1;
+    //previousIndex is the item BEING dragged
+    //currentIndex is the WHERE it is being dragged
+
+    const droppedPosition = this.slips[event.currentIndex].position;
+    if(event.previousIndex != event.currentIndex) {
+      //if moving DOWN the queue, need to offset things above its drop point
+      //if moving UP the queue, need to offset things below its drop point
+      //Then need to update the thing being dropped
+
+      if(event.previousIndex < event.currentIndex) {
+        //was moved DOWN the queue
+        for(let i=event.previousIndex; i <= event.currentIndex; i ++) {
+          this.slips[i].position -= 1;
+          this.slipService.updateSlip(this.slips[i]).subscribe();
+        }
+      } else if (event.previousIndex > event.currentIndex) {
+        //was moved UP the queue
+        for(let i=event.currentIndex; i < event.previousIndex; i++) {
+          this.slips[i].position += 1;
+          this.slipService.updateSlip(this.slips[i]).subscribe();
+        }
       }
-    } else if (event.previousIndex > event.currentIndex) {
-      this.slips[event.previousIndex].position = this.slips[event.currentIndex].position;
-      for(let i=event.currentIndex; i < event.previousIndex; i++) {
-        this.slips[i].position += 1;
-      }
+      this.slips[event.previousIndex].position = droppedPosition;
+      this.slipService.updateSlip(this.slips[event.previousIndex]).subscribe();
+      moveItemInArray(this.slips, event.previousIndex, event.currentIndex);
+      this.updatedSlips.emit(this.slips);
     }
-    moveItemInArray(this.slips, event.previousIndex, event.currentIndex);
-    //console.log('emitting drop');
-    this.updatedSlips.emit(this.slips);
-    
   }
   
 

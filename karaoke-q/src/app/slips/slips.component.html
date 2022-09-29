@@ -13,7 +13,10 @@
 		    </div>
 		    <h2 class="m-0" style="color: {{slip.singer.color}};"><span class="singer-name">{{slip.singer.name}} :</span><span class="song-title"> {{slip.song.title}} -</span><span class="song-artist"> {{slip.song.artist}}</span></h2>
 		</button>
-		<div class="card-body" #collapse="ngbCollapse" [(ngbCollapse)]="slip.isCollapsed" style="background-color: {{slip.singer.color}}17;">
+		<div class="card-body" 
+		#collapse="ngbCollapse" 
+		[(ngbCollapse)]="slip.isCollapsed" 
+		style="background-color: {{slip.singer.color}}17;">
 
 			<h5 class="card-title">{{slip.song ? slip.song.title : ''}}</h5>
 			<h5 class="card-title">{{slip.song ? slip.song.artist : ''}}</h5>

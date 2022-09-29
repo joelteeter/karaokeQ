@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Singer } from '../models/singer';
 import { SingerService } from '../services/singer.service';
 
@@ -28,10 +28,28 @@ export class SingersComponent implements OnInit {
   faTrashAlt = faTrashAlt;
   selectedSinger?: any = null;
   editting: boolean = false;
+  closeResult = '';
 
-  constructor(private singerService: SingerService, private slipService: SlipService) { }
+  constructor(private singerService: SingerService, private slipService: SlipService, private modalService: NgbModal) { }
 
   ngOnInit(): void {
+  }
+
+    open(content:any) {
+
+    this.modalService.open(content, {
+      ariaLabelledBy: 'modal-basic-title',
+      size: 'xl',
+      scrollable: true,
+    }).result.then((result) => {
+      if(result === 'Save click') {
+
+        
+      }
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
   }
 
   deleteSinger(singer: Singer): void {
@@ -63,15 +81,19 @@ export class SingersComponent implements OnInit {
   }
 
   updateSinger(singer: any): void {
-    if(!singer.song) {
+    console.log('updaing singer', singer);
+    if(!singer.song && singer.id) {
+      console.log('updating singer', singer);
       this.singerService.updateSinger(singer).subscribe(() => {
         this.updateSlips(singer);       
       })
     } else {
-      this.singerService.addSinger(singer).subscribe((singerResult) => {
+      console.log('adding singer', singer);
+      this.singerService.addSinger(singer, this.sessionId).subscribe((singerResult) => {
         this.singers.push(singerResult);
-
-        this.addSlip(singerResult, singer.song);
+        if(singer.song.id) {
+          this.addSlip(singerResult, singer.song);
+        }
       })
     }
     this.editting = false;
@@ -106,13 +128,23 @@ export class SingersComponent implements OnInit {
           singer: singer, 
           song: song, 
           isCollapsed: true, 
-          position: lastPosition+1
+          position: lastPosition > 0 ? lastPosition+1 : 1
         }).subscribe((slip) => {
         this.slips.push(slip);
         this.slipsUpdate.emit(this.slips);
         } )
     }
     
+  }
+
+    private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
   }
 
 }
