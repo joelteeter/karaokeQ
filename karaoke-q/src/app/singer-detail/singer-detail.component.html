@@ -8,7 +8,7 @@
 	<div *ngIf="!singerToEdit.id" class="song-search-wrapper mt-3">
 		<app-song-search (selectedSong)="selectSong($event)" ></app-song-search>
 	</div>
-	<button type="submit" [disabled]="!singerForm.valid || !singerToEdit.id ? !selectedSong.id : false" class="btn btn-primary mt-3">Save</button>
+	<button type="submit" [disabled]="!singerForm.valid" class="btn btn-primary mt-3">Save</button>
 	<button type="cancel" (click)="cancel()" class="btn btn-danger mt-3">Cancel</button>
 </form>
 

@@ -27,7 +27,6 @@ export class ManageLibraryComponent implements OnInit {
 
   ngOnInit(): void {
     this.songService.getSongs().subscribe( (songs:any) => {
-      console.log(songs);
       this.dataSource = songs.data;
     });
   }
@@ -96,18 +95,15 @@ export class ManageLibraryComponent implements OnInit {
     const slipExists = this.slips.filter(obj => {
         return obj.song.id === song.id;
       });
-    console.log(slipExists);
     if(slipExists.length > 0) {
       alert('cannot delete a song currently queued!');
     } else {
       if(window.confirm('This will permanently remove this song from the library! Procede?')) {
         this.songService.deleteSong(song.id).subscribe( result => {
           
-          console.log(result);
           this.dataSource = this.dataSource.filter(s => {
             return s.id != song.id;
           })
-          console.log(this.dataSource);
         })
       }
     }

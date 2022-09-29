@@ -14,8 +14,8 @@ import { LogsService } from './logs.service';
 })
 export class SlipService {
 
-  //private slipsUrl = 'http://localhost:3000/slips';  //web api
-  private slipsUrl = 'https://karaoke-q-api.herokuapp.com/slips';  //web api
+  private slipsUrl = 'http://localhost:3000/slips';  //web api
+  //private slipsUrl = 'https://karaoke-q-api.herokuapp.com/slips';  //web api
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -25,11 +25,11 @@ export class SlipService {
     private http: HttpClient) { }
 
   /* GET */
-  getSlips(sessionID?: number): Observable<Slip[]> {   
-    console.log('getting slips for session: ',sessionID);
+  getSlips(sessionId?: number): Observable<Slip[]> {   
+    console.log('getting slips for session: ',sessionId);
     let params = new HttpParams();
-    if(sessionID) {
-      params = params.append('sessionid', sessionID);
+    if(sessionId) {
+      params = params.append('sessionid', sessionId);
     }
     return this.http.get<Slip[]>(this.slipsUrl, {params: params})
       .pipe(
@@ -49,7 +49,8 @@ export class SlipService {
 
   /* PUT */
   updateSlip(slip: Slip): Observable<any> {
-    return this.http.put(this.slipsUrl, slip, this.httpOptions)
+    const url = `${this.slipsUrl}/${slip.id}`;
+    return this.http.put(url, slip, this.httpOptions)
       .pipe(        
         tap(_ => this.log(`updated slip id=${slip.id}`)),
         catchError(this.handleError<any>('updateSlip'))
@@ -58,6 +59,7 @@ export class SlipService {
 
   /* POST */
   addSlip(slip: Slip): Observable<Slip> {
+    console.log('adding slip',slip);
     return this.http.post<Slip>(this.slipsUrl, slip, this.httpOptions)
       .pipe(
         tap((newSlip: Slip) => this.log(`added slip w/ id=${newSlip.id}`)),
@@ -71,6 +73,17 @@ export class SlipService {
 
     return this.http.delete<Slip>(url, this.httpOptions).pipe(
       tap(_ => this.log(`deleted slip id=${id}`)),
+      catchError(this.handleError<Slip>('deleteSlip'))
+    );
+  }
+  deleteSessionSlips(sessionId: number): Observable<Slip> {
+    let params = new HttpParams();
+    if(sessionId) {
+      params = params.append('sessionid', sessionId);    
+      
+    }
+    return this.http.delete<Slip>(this.slipsUrl, {params: params}).pipe(
+      tap(_ => this.log(`deleted slip session_id=${sessionId}`)),
       catchError(this.handleError<Slip>('deleteSlip'))
     );
   }

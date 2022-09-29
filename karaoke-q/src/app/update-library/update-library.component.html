@@ -1,8 +1,8 @@
-<button type="button" (click)="open(content)" class="btn btn-primary m-2">Update Song Library</button>
+<button type="button" (click)="open(content)" class="btn btn-primary">Add New Song To Library</button>
 
 <ng-template #content let-modal>
 	<div class="modal-header">
-		<h4 class="modal-title" id="modal-basic-title">Upload new library</h4>
+		<h4 class="modal-title" id="modal-basic-title">Add New Song To Library</h4>
 		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
 	</div>
 	<div class="modal-body">
@@ -17,9 +17,10 @@
 					<label for="title">Song Title: </label>
 					<input id="title" [(ngModel)]="newSong.title" placeholder="title">
 				</div>
+				<div class="mt-1"><em>You can enter the youtube video ID, past the youtube video url, or past the youtube embed link here</em></div>
 				<div>
 					<label for="embedurl">YouTube ID:</label>
-					<input id="embedurl" [(ngModel)]="newSong.embedurl" placeholder="5bCwue1d9Js">
+					<input id="embedurl" [(ngModel)]="newSong.embedurl" (change)="checkForUrl($event)" placeholder="5bCwue1d9Js">
 				</div>
 			</div>
 			<button (click)="checkSong()">Check Song</button>
@@ -30,6 +31,7 @@
 				[height]="100"
 				[width]="100" 
 				(ready)="youTubeReady($event)"
+				(stateChange)="youTubeStateChange($event)"
 				></youtube-player>
 				
 			</div>

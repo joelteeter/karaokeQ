@@ -19,7 +19,11 @@ export class DashboardComponent implements OnInit {
   singers: Singer[] = [];
   slips: Slip[] = [];
   newSlip: any = null;
-  isAutoBalanceQueue = true;
+  settings: any = {
+    isAutoBalanceQueue: true,
+    autoPlay: false,
+  }
+  
   closeResult = '';
 
   constructor(private singerService: SingerService, private slipService: SlipService, private songService: SongService, private modalService: NgbModal, private route: ActivatedRoute) { }
@@ -27,9 +31,8 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe( (params: ParamMap) =>
       {
-        const thing = params.get('id');
-        this.sessionId = thing;
-        console.log(this.sessionId);
+
+        this.sessionId = params.get('id');
       }
     );
     this.getSingers();
@@ -50,14 +53,13 @@ export class DashboardComponent implements OnInit {
 
   getSingers(): void {
     //this won't come up much, using memory for now to populate some init data
-    this.singerService.getSingers()
+    this.singerService.getSingers(this.sessionId)
       .subscribe(singers => {
         this.singers = singers
       });
   }
   
   getSlips(): void {
-    //this won't come up much, using memory for now to populate some init data
     this.slipService.getSlips(this.sessionId)
       .subscribe(slips => {
         this.slips = [];
@@ -65,27 +67,26 @@ export class DashboardComponent implements OnInit {
           slip.isCollapsed = true;
           this.slips.push(slip);
         })
-        if(this.isAutoBalanceQueue){
+        if(this.settings.isAutoBalanceQueue){
           this.balanceQueue();
         }
+        console.log('here are the getSlips results', this.slips);
       });
   }
 
   addSlip(slipToAdd: Slip): void {
     let lastPosition = 0;
     if(this.slips.length > 0) {
-      console.log('wtf this is the array to search', this.slips);
+      //console.log('to find max position, this is the array to search', this.slips);
       lastPosition = Math.max(...this.slips.map(obj => obj.position));
     }
-    console.log(lastPosition);
     
     slipToAdd.position = lastPosition ? lastPosition + 1 : 1;
     slipToAdd.sessionId = this.sessionId;
     console.log('dashboard adding slip', slipToAdd)
     this.slipService.addSlip(slipToAdd).subscribe((slip) => {
-      console.log(slip);
       this.slips.push(slip);
-      if(this.isAutoBalanceQueue) {
+      if(this.settings.isAutoBalanceQueue) {
         this.balanceQueue();
       }
     });
@@ -93,15 +94,15 @@ export class DashboardComponent implements OnInit {
 
   updateSingers(singers: any): void {
     this.singers = singers;
-    if(this.isAutoBalanceQueue) {
+    if(this.settings.isAutoBalanceQueue) {
       this.balanceQueue();
     }
 
   }
   updateSlips(slips: any): void {
+    console.log('slip dragged and dropped', slips);
     this.slips = slips;
-    //console.log('emit caught')
-    if(this.isAutoBalanceQueue) {
+    if(this.settings.isAutoBalanceQueue) {
       this.balanceQueue();
     }
   }
@@ -160,9 +161,13 @@ export class DashboardComponent implements OnInit {
 
     //now for each piece, I grab the slips and push them to what will be the new queue;
     let newQueue:any[] = [];
+    let count = 1;
     mapArray.forEach((map:any) => {
       map.forEach((a:any )=> {
+        a.position = count;
         newQueue.push(a);
+        this.slipService.updateSlip(a).subscribe();
+        count++;
       })
     })
 

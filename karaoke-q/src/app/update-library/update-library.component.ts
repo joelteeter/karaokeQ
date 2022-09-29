@@ -46,8 +46,33 @@ export class UpdateLibraryComponent implements OnInit {
     this.validatingSong = true;
     
   }
+
+  checkForUrl(e:any): void {
+    //TODO: make this experience better
+    //check for youtube link
+    if(this.newSong.embedurl.toLowerCase().includes('?v=')) {
+      //is a youtube link - should have ?v=xxxxxx as a query parameter
+      //i want what's between the last /?v= and the first &, or everything after /?v=
+      var newLinkString = this.newSong.embedurl.slice(this.newSong.embedurl.indexOf('?v=') + 3, this.newSong.embedurl.indexOf('&') > 0 ? this.newSong.embedurl.indexOf('&') : this.newSong.embedurl.length);
+      this.newSong.embedurl = newLinkString;
+    }
+    //check for youtube embed link
+    /*
+    with a parameter
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/Tqr59JXrFCk?start=28" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    without a parameter
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/Tqr59JXrFCk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    ! even better, the lenght of a youtube video id is 11, just get index of /embed/ + 11
+    */
+    if(this.newSong.embedurl.toLowerCase().includes('/embed/')) {
+      //is a youtube embed link, should have the id after '/embed'
+      //i want whats between '/embed/' and the first ?, or the NEXT "
+      var newEmbedString = this.newSong.embedurl.slice(this.newSong.embedurl.indexOf('/embed/') + 7, this.newSong.embedurl.indexOf('/embed/') + 7 + 11);
+      this.newSong.embedurl = newEmbedString;
+    }
+  }
+
   youTubeReady(e:any) {
-    console.log(e);
     console.log('checking...');
     console.log(e.target.playerInfo.videoData)
     if(e.target.playerInfo.videoData.isPlayable) {
@@ -57,6 +82,18 @@ export class UpdateLibraryComponent implements OnInit {
       //this.validatingSong = false;
     }
     
+  }
+
+    youTubeStateChange(e:any) {
+    console.log('checking...');
+    console.log(e.target.playerInfo.videoData)
+    if(e.target.playerInfo.videoData.isPlayable) {
+      this.validSong = true;
+    } else {
+      this.validSong = false;
+      //this.validatingSong = false;
+    }
+
   }
 
   submitNewSong(): void {
