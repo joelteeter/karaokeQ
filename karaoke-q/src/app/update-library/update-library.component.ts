@@ -73,7 +73,6 @@ export class UpdateLibraryComponent implements OnInit {
   }
 
   youTubeReady(e:any) {
-    console.log(e);
     console.log('checking...');
     console.log(e.target.playerInfo.videoData)
     if(e.target.playerInfo.videoData.isPlayable) {
@@ -83,6 +82,18 @@ export class UpdateLibraryComponent implements OnInit {
       //this.validatingSong = false;
     }
     
+  }
+
+    youTubeStateChange(e:any) {
+    console.log('checking...');
+    console.log(e.target.playerInfo.videoData)
+    if(e.target.playerInfo.videoData.isPlayable) {
+      this.validSong = true;
+    } else {
+      this.validSong = false;
+      //this.validatingSong = false;
+    }
+
   }
 
   submitNewSong(): void {
