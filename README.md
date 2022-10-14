@@ -1,2 +1,2 @@
 # karaokeQ
-a queueing app for using karafun's library
+an app for karaoke'ing
