@@ -4,7 +4,6 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { faFile } from '@fortawesome/free-solid-svg-icons';
 import { Song } from '../models/song';
 import { SongService } from '../services/song.service';
-import { YoutubeService } from '../services/youtube.service';
 
 @Component({
   selector: 'app-update-library',
@@ -18,7 +17,7 @@ export class UpdateLibraryComponent implements OnInit {
   closeResult = '';
   newSong: Song = {} as Song;
 
-  constructor(private songService: SongService, private youtubeService: YoutubeService, private modalService: NgbModal,
+  constructor(private songService: SongService, private modalService: NgbModal,
               private title: Title, ) { }
 
   ngOnInit(): void {
@@ -51,7 +50,14 @@ export class UpdateLibraryComponent implements OnInit {
     
   }
 
+  hideVideo(): void {
+    this.validatingSong = false;
+  }
+
+
   checkForUrl(e:any): void {
+    this.validatingSong = false;
+    console.log("checkforUrl validating song", this.validatingSong);
     //TODO: make this experience better
     //check for youtube link
     if(this.newSong.embedurl.toLowerCase().includes('?v=')) {

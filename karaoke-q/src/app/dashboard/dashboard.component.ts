@@ -25,23 +25,24 @@ export class DashboardComponent implements OnInit {
   settings: any = {
     isAutoBalanceQueue: true,
     autoPlay: false,
-  }
-  
+  }  
   closeResult = '';
 
   constructor(private singerService: SingerService, 
-              private slipService: SlipService, 
-              private songService: SongService,
-              private sessionService: SessionService,  
-              public spinnerService: SpinnerService,
-              private modalService: NgbModal, 
-              private route: ActivatedRoute,
-              private router: Router,
-              private title: Title ) { }
+    private slipService: SlipService, 
+    private songService: SongService,
+    private sessionService: SessionService,  
+    public spinnerService: SpinnerService,
+    private modalService: NgbModal, 
+    private route: ActivatedRoute,
+    private router: Router,
+    private title: Title ) { }
 
   ngOnInit(): void {
     this.title.setTitle('dashboard');
     console.log('initialing ', this.title.getTitle());
+
+    //Get valid session or redirect back to sessions component
     this.route.paramMap.subscribe( (params: ParamMap) =>
       {
         this.sessionId = params.get('id');
@@ -55,16 +56,16 @@ export class DashboardComponent implements OnInit {
             this.router.navigate(['/']);
           }
         });
-
-
       }
     );
+
+    //TODO: move getSingers to child components? would probably need to have those children deal with related services too...
     this.getSingers();
+
     this.getSlips();
   }
 
-  open(content:any) {
-
+  openHowTo(content:any) {
     this.modalService.open(content, {
       ariaLabelledBy: 'how-to-karaoke',
       scrollable: true,
@@ -76,29 +77,33 @@ export class DashboardComponent implements OnInit {
   }
 
   getSingers(): void {
-    //this won't come up much, using memory for now to populate some init data
     this.singerService.getSingers(this.sessionId)
-      .subscribe(singers => {
-        this.singers = singers
-      });
+    .subscribe(singers => {
+      this.singers = singers;
+    });
   }
   
   getSlips(): void {
     this.slipService.getSlips(this.sessionId)
-      .subscribe(slips => {
-        this.slips = [];
-        slips.forEach(slip => {
-          slip.isCollapsed = true;
-          this.slips.push(slip);
-        })
-        if(this.settings.isAutoBalanceQueue){
-          this.balanceQueue();
-        }
-        console.log('here are the getSlips results', this.slips);
-      });
+    .subscribe(slips => {
+      this.slips = [];
+      slips.forEach(slip => {
+        slip.isCollapsed = true;
+        this.slips.push(slip);
+      })
+      if(this.settings.isAutoBalanceQueue){
+        this.balanceQueue();
+      }
+      //console.log('here are the getSlips results', this.slips);
+    });
   }
 
   addSlip(slipToAdd: Slip): void {
+    /*
+      Find the last position, then add one
+      If no last position set it to 1
+      Add the slip
+    */
     let lastPosition = 0;
     if(this.slips.length > 0) {
       //console.log('to find max position, this is the array to search', this.slips);
@@ -117,14 +122,18 @@ export class DashboardComponent implements OnInit {
   }
 
   updateSingers(singers: any): void {
+    /* capturing the emit from singers component */
+    //TODO: move singers to children component(s) have dashboard just deal with slips
     this.singers = singers;
     if(this.settings.isAutoBalanceQueue) {
       this.balanceQueue();
     }
 
   }
+
   updateSlips(slips: any): void {
-    console.log('slip dragged and dropped', slips);
+    /* called when slips needs updating */
+    //console.log('slip dragged and dropped', slips);
     this.slips = slips;
     if(this.settings.isAutoBalanceQueue) {
       this.balanceQueue();
@@ -132,7 +141,11 @@ export class DashboardComponent implements OnInit {
   }
 
   updateVideoPlayerStatus(e: any): void {
-    console.log('updating video player status: ', e);
+    /*  Update the video player 
+        go to next video if nextSinger event
+        update request if validation requested
+    */
+    //console.log('updating video player status: ', e);
     if(e === 'nextSinger') {
       this.slipService.deleteSlip(Number(this.slips[0].id)).subscribe( () => {
         this.slips.shift();
@@ -152,10 +165,10 @@ export class DashboardComponent implements OnInit {
       i'm breaking down the queue into peices with unique singers, then combining those pieces.
       each piece is a map of singer and song, if a slip has a singer who is already in a piece/map 
       then I add them to the next one that doesn't
-    */
+      */
 
-    const mapArray:any = [];
-    const singerMap = new Map();
+      const mapArray:any = [];
+      const singerMap = new Map();
 
     //set the singer map, i can use this to determine how many pieces/maps I need
     for(let i = 0; i < this.slips.length; i++) {
