@@ -3,3 +3,17 @@
 		margin-bottom: 10px;
 	}
 }
+.magic-word-input {
+	width: 200px;
+}
+.admin-section {
+	.btn-group {
+		width: 320px;
+	}
+}
+
+@media only screen and (max-width: 992px) {
+	.magic-word-input {
+		width: 100%;
+	}
+}

@@ -20,8 +20,8 @@ export class SessionComponent implements OnInit {
   sessions: Session[] = [];
   newSession: Session = {} as Session;
   magicWord: string = '';
-  isAdmin: boolean = true;
-  //isAdmin: boolean = false;
+  isAdmin: boolean = false;
+  //isAdmin: boolean = true;
 
   constructor(private sessionService: SessionService,
               private router: Router,

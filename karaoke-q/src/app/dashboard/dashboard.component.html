@@ -5,11 +5,11 @@
 <header>
 	<div>
 		<h1 class="ms-3 mt-1"><span>Karaoke Queue</span>			
-			<button type="button" class="btn btn-outline-secondary ms-3" (click)="open(popContent)">
-			  How to use this?
+			<button type="button" class="btn btn-outline-secondary ms-3" (click)="openHowTo(popHowToContent)">
+				How to use this?
 			</button>
 		</h1>
-		<ng-template #popContent let-modal>
+		<ng-template #popHowToContent let-modal>
 			<div class="modal-header">
 				<h4 class="modal-title" id="modal-basic-title">How to use this</h4>
 				<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
@@ -47,45 +47,44 @@
 		</div>
 		<div class="col-12 col-lg-9 order-1 order-lg-2 singers-col">
 			<div class="btn-group">
-			  <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
-			    <button type="button" class="btn btn-outline-danger" ngbDropdownToggle>Queue</button>
-			    <div class="dropdown-menu p-3" ngbDropdownMenu>
-			      <app-slip-detail [singers]="singers" (newSlip)="addSlip($event)"></app-slip-detail>
-			      <button class="btn btn-primary" (click)="getSlips()">Refresh Queue</button>
-			      <button *ngIf="!settings.isAutoBalanceQueue" class="btn btn-danger" (click)="balanceQueue()">Balance Queue</button>
-			    </div>
-			  </div>
-			  <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
-			    <button type="button" class="btn btn-outline-success" ngbDropdownToggle>Songs</button>
-			    <div class="dropdown-menu p-3" ngbDropdownMenu>
-		    		<app-update-library></app-update-library>
-		      		
-			    </div>
-			  </div>
-	  		  <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
-			    <button type="button" class="btn btn-outline-success" ngbDropdownToggle>Singers</button>
-			    <div class="dropdown-menu p-3" ngbDropdownMenu>
-					<app-singers 
-					[sessionId]="sessionId" 
-					[singers]="singers" 
-					[slips]="slips" 
-					(singersUpdate)="updateSingers($event)"
-					(slipsUpdate)="updateSlips($event)"  
-					></app-singers>
-			    </div>
-			  </div>
-			  <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
-			    <button type="button" class="btn btn-outline-success" ngbDropdownToggle>Settings</button>
-			    <div class="dropdown-menu p-3" ngbDropdownMenu>
-			      <mat-checkbox [(ngModel)]="settings.isAutoBalanceQueue" class="mt-2 mt-sm-0">Auto Balance Queue</mat-checkbox>
-			      <mat-checkbox [(ngModel)]="settings.autoPlay" class="mt-2 mt-sm-0">Auto Play Songs</mat-checkbox>
-			    </div>
-			  </div>
+				<div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+					<button type="button" class="btn btn-outline-danger" ngbDropdownToggle>Queue</button>
+					<div class="dropdown-menu p-3" ngbDropdownMenu>
+						<app-slip-detail [singers]="singers" (newSlip)="addSlip($event)"></app-slip-detail>
+						<button class="btn btn-primary" (click)="getSlips()">Refresh Queue</button>
+						<button *ngIf="!settings.isAutoBalanceQueue" class="btn btn-danger" (click)="balanceQueue()">Balance Queue</button>
+					</div>
+				</div>
+				<div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+					<button type="button" class="btn btn-outline-success" ngbDropdownToggle>Songs</button>
+					<div class="dropdown-menu p-3" ngbDropdownMenu>
+						<app-update-library></app-update-library>						
+					</div>
+				</div>
+				<div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+					<button type="button" class="btn btn-outline-success" ngbDropdownToggle>Singers</button>
+					<div class="dropdown-menu p-3" ngbDropdownMenu>
+						<app-singers 
+						[sessionId]="sessionId" 
+						[singers]="singers" 
+						[slips]="slips" 
+						(singersUpdate)="updateSingers($event)"
+						(slipsUpdate)="updateSlips($event)"  
+						></app-singers>
+					</div>
+				</div>
+				<div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+					<button type="button" class="btn btn-outline-success" ngbDropdownToggle>Settings</button>
+					<div class="dropdown-menu p-3" ngbDropdownMenu>
+						<mat-checkbox [(ngModel)]="settings.isAutoBalanceQueue" class="mt-2 mt-sm-0">Auto Balance Queue</mat-checkbox>
+						<mat-checkbox [(ngModel)]="settings.autoPlay" class="mt-2 mt-sm-0">Auto Play Songs</mat-checkbox>
+					</div>
+				</div>
 			</div>
 			<app-video-component 
-				[slipVideo]="slips" 
-				[settings]="settings" 
-				(videoPlayerStatus)="updateVideoPlayerStatus($event)"
+			[slipVideo]="slips" 
+			[settings]="settings" 
+			(videoPlayerStatus)="updateVideoPlayerStatus($event)"
 			></app-video-component>		
 
 		</div>
@@ -94,6 +93,3 @@
 <div *ngIf="!session">
 	<h1>Sorry there was an error, this session:{{sessionId}} may not exist</h1>
 </div>
-
-	
-

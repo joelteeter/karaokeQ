@@ -11,19 +11,32 @@
 
 				<div>
 					<label for="artist">Artist: </label>
-					<input id="artist" [(ngModel)]="newSong.artist" placeholder="artist">
+					<input id="artist" [(ngModel)]="newSong.artist" placeholder="artist" class="form-control mb-2">
 				</div>
 				<div>
 					<label for="title">Song Title: </label>
-					<input id="title" [(ngModel)]="newSong.title" placeholder="title">
+					<input id="title" [(ngModel)]="newSong.title" placeholder="title" class="form-control mb-2">
 				</div>
-				<div class="mt-1"><em>You can enter the youtube video ID, past the youtube video url, or past the youtube embed link here</em></div>
+				<div class="mt-1">
+					<div>
+						<em>You can enter the youtube video ID, past the youtube video url, or past the youtube embed link here.  Some examples:</em>
+					</div>
+					<div>
+						<em>5bCwue1d9Js</em>
+					</div>
+					<div>
+						<em>https://www.youtube.com/watch?v=5bCwue1d9Js</em>
+					</div>
+					<div>
+						<em>https://www.youtube.com/embed/5bCwue1d9Js</em>
+					</div>
+				</div>
 				<div>
 					<label for="embedurl">YouTube ID:</label>
-					<input id="embedurl" [(ngModel)]="newSong.embedurl" (change)="checkForUrl($event)" placeholder="5bCwue1d9Js">
+					<input id="embedurl" [(ngModel)]="newSong.embedurl" (ngModelChange)="hideVideo()" (change)="checkForUrl($event)" placeholder="5bCwue1d9Js" class="form-control mb-2">
 				</div>
 			</div>
-			<button (click)="checkSong()">Check Song</button>
+			<button (click)="checkSong()" class="btn btn-primary">Check Song</button>
 			<div >{{validSong ? 'This song should work' : 'This song should not work'}}</div>
 			<div *ngIf="newSong.embedurl && validatingSong">
 				

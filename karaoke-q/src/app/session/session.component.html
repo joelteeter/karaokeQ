@@ -2,21 +2,27 @@
 	<mat-spinner [diameter]="50" *ngIf="spinnerService.visibility | async">
 	</mat-spinner>
 </div>
+<div class="admin-section">
+	<div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+		<button type="button" class="btn btn-outline-danger" ngbDropdownToggle>Admin</button>
+		<div class="dropdown-menu p-3" ngbDropdownMenu>
+			<label for="addmin-pass">Magic Word</label>
+			<input #magicWordBox id="admin-pass" class="form-control magic-word-input mb-2 me-3" [(ngModel)]="magicWord" (input)="isMagicWord(magicWordBox.value)" />
+			<button [disabled]="!isAdmin" type="button" (click)="openLibraryManager()" class="btn btn-primary mb-2">Manage Song Library</button>
+			<button [disabled]="!isAdmin" type="button" (click)="openSessionManager()" class="btn btn-primary">Manage Sessions</button>
+		</div>
+	</div>
+</div>
 <div class="sessions px-3 pt-3 px-lg-5 pt-lg-5">
 	<h3>Welcome to</h3>
 	<h1>Joel's Karaoke Player</h1>
 	<hr/>
-	<label for="addmin-pass">Magic Word</label>
-	<input #magicWordBox id="admin-pass" class="form-control w-lg-25 w-100 mb-2 mb-lg-0 me-3 d-inline" [(ngModel)]="magicWord" (input)="isMagicWord(magicWordBox.value)" />
-	<button [disabled]="!isAdmin" type="button" (click)="openLibraryManager()" class="btn btn-primary mb-1 mb-lg-0">Manage Song Library</button>
-	<button [disabled]="!isAdmin" type="button" (click)="openSessionManager()" class="btn btn-primary">Manage Sessions</button>
-	<hr/>
 	<p> Select a session, or add a new session </p>
 	<div class="mb-2">
 		<label for="session">Session Name: </label>
-		<input id="session" [(ngModel)]="newSession.name" placeholder="New Session Name">
+		<input id="session" [(ngModel)]="newSession.name" placeholder="New Session Name" class="form-control d-inline me-2">
 	
-		<button [disabled]="!newSession.name" (click)="add(newSession.name)">Go!</button>
+		<button [disabled]="!newSession.name" (click)="add(newSession.name)" class="btn btn-primary">Go!</button>
 	</div>
 	<div *ngFor="let session of sessions" class=" session card">
 		<div class="card-body">
