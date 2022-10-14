@@ -35,6 +35,31 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 	}
 }
 
+/* spinner */
+.mat-progress-spinner-wrapper {
+	.mat-progress-spinner {
+		&.mat-spinner {
+			&.mat-primary {
+				position: absolute;
+				width: 100% !important;
+				height: 100% !important;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				background: rgba(0, 0, 0, 0.35);
+				z-index: 100;
+
+				svg {
+					position: relative;
+				}
+				
+			}
+
+		}
+	}
+}
+
+
 @media only screen and (max-width: 992px) {
 	.btn {
 	  	&.small {

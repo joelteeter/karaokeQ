@@ -1,14 +1,23 @@
-<div *ngFor="let session of sessions" class=" session card">
-	<div class="card-body">
-		<div class="session-name">
-			<a routerLink="/session/{{session.id}}">
-				<h2>
-					<span>{{session.name}}</span>
-				</h2>
-			</a>
-			<button (click)="delete(session)" type="button" class="btn btn-danger small">
-				<fa-icon [icon]="faTrashAlt"></fa-icon>
-			</button>
+<div class="modal-header">
+	<h4 class="modal-title" id="modal-basic-title">Manage Sessions</h4>
+	<button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+	<div class="modal-body">
+	<div *ngFor="let session of sessions" class=" session card">
+		<div class="card-body">
+			<div class="session-name">
+				<a routerLink="/session/{{session.id}}">
+					<h2>
+						<span>{{session.name}}</span>
+					</h2>
+				</a>
+				<button (click)="delete(session)" type="button" class="btn btn-danger small">
+					<fa-icon [icon]="faTrashAlt"></fa-icon>
+				</button>
+			</div>
 		</div>
 	</div>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-primary" (click)="activeModal.close('Save click')">Done</button>
 </div>

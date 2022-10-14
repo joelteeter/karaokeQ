@@ -37,6 +37,14 @@ export class SlipService {
           catchError(this.handleError<Slip[]>('getSlips', []))
         );
   }
+  getAllSlips(): Observable<Slip[]> {   
+    console.log('getting all slips');
+    return this.http.get<Slip[]>(this.slipsUrl)
+      .pipe(
+          tap(_ => this.log('fetched slips')),
+          catchError(this.handleError<Slip[]>('getSlips', []))
+        );
+  }
   getSlip(id: number): Observable<Slip> {
     const url = `${this.slipsUrl}/${id}';`
     this.logsService.add(`SlipService: fetched slip id=$(id}`);

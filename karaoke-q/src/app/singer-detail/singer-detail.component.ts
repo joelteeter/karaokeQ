@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Singer } from '../models/singer';
 import { Song } from '../models/song';
@@ -24,8 +25,8 @@ export class SingerDetailComponent implements OnInit {
     singerName: ['', Validators.required]
   });
 
-  constructor(private fb: FormBuilder) { 
-
+  constructor(private fb: FormBuilder,
+              private title: Title, ) { 
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -35,6 +36,8 @@ export class SingerDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.title.setTitle('singer-detail');
+    console.log('initialing ', this.title.getTitle());
     if(this.singerToEdit) {
       this.color = this.singerToEdit.color;
     }

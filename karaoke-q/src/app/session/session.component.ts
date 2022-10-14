@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { BrowserModule, Title } from '@angular/platform-browser';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { Session } from '../models/session';
 import { SessionService } from '../services/session.service';
+import { SpinnerService } from '../services/spinner.service';
+
+import { ManageLibraryComponent } from '../manage-library/manage-library.component';
+import { ManageSessionsComponent } from '../manage-sessions/manage-sessions.component';
 
 
 @Component({
@@ -13,10 +19,19 @@ export class SessionComponent implements OnInit {
 
   sessions: Session[] = [];
   newSession: Session = {} as Session;
+  magicWord: string = '';
+  isAdmin: boolean = true;
+  //isAdmin: boolean = false;
 
-  constructor(private sessionService: SessionService, private router: Router) { }
+  constructor(private sessionService: SessionService,
+              private router: Router,
+              private modalService: NgbModal,
+              public spinnerService: SpinnerService,
+              private title: Title, ) { }
 
   ngOnInit(): void {
+    this.title.setTitle('sessions');
+    console.log('initialing ', this.title.getTitle());
     this.getSessions();
   }
 
@@ -24,6 +39,15 @@ export class SessionComponent implements OnInit {
     this.sessionService.getSessions().subscribe( sessions => {
       this.sessions = sessions
     })
+  }
+
+  isMagicWord(str: string): void {
+    //TODO: add users and roles, this is a bad workaround for now
+    if(str.toLowerCase() == 'pretty please') {
+      this.isAdmin = true;
+    } else {
+      this.isAdmin = false;
+    }
   }
 
   add(name: string): void {
@@ -38,6 +62,45 @@ export class SessionComponent implements OnInit {
       //TODO: ensure session is coming from API correct
       //TODO: goto route /session/session.id/ to show that sessions dashboard
     })
+  }
+
+  openLibraryManager(): void {
+    const modalRef = this.modalService.open(ManageLibraryComponent, {
+      ariaLabelledBy: 'manage-song-library',
+      scrollable: true,
+      size: 'xl',
+    });
+  }
+  openSessionManager(): void {
+    const modalRef = this.modalService.open(ManageSessionsComponent, {
+      ariaLabelledBy: 'manage-sessions',
+      scrollable: true,
+      size: 'xl',
+    });
+
+    //this is how to pass things into the modal components
+    modalRef.componentInstance.sessions = this.sessions;
+
+    //after it's been closed
+    /* generic result
+    modalRef.result.then( (data) => {
+      //on close
+      console.log('closed modal', data);
+    }, (reason) => {
+      //on dismiss
+      console.log('dismissed modal', reason);
+    });
+    */
+
+    modalRef.result.then( (data) => {
+      //on close
+      this.getSessions();
+    }, (reason) => {
+      //on dismiss
+      this.getSessions();
+    });
+
+
   }
 
 }

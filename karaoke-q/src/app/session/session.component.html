@@ -1,21 +1,36 @@
-<H1> Welcome to Karaoke Player </H1>
-<div> Select a session, or add a new session </div>
-<div *ngFor="let session of sessions" class=" session card">
-	<div class="card-body">
-		<div class="session-name">
-			<a routerLink="/session/{{session.id}}">
-				<h2>
-					<span>{{session.id}} : </span>
-					<span>{{session.name}}</span>
-				</h2>
-			</a>
-		</div>
-		<div class="session-buttons">
+<div class="mat-progress-spinner-wrapper">
+	<mat-spinner [diameter]="50" *ngIf="spinnerService.visibility | async">
+	</mat-spinner>
+</div>
+<div class="sessions px-3 pt-3 px-lg-5 pt-lg-5">
+	<h3>Welcome to</h3>
+	<h1>Joel's Karaoke Player</h1>
+	<hr/>
+	<label for="addmin-pass">Magic Word</label>
+	<input #magicWordBox id="admin-pass" class="form-control w-lg-25 w-100 mb-2 mb-lg-0 me-3 d-inline" [(ngModel)]="magicWord" (input)="isMagicWord(magicWordBox.value)" />
+	<button [disabled]="!isAdmin" type="button" (click)="openLibraryManager()" class="btn btn-primary mb-1 mb-lg-0">Manage Song Library</button>
+	<button [disabled]="!isAdmin" type="button" (click)="openSessionManager()" class="btn btn-primary">Manage Sessions</button>
+	<hr/>
+	<p> Select a session, or add a new session </p>
+	<div class="mb-2">
+		<label for="session">Session Name: </label>
+		<input id="session" [(ngModel)]="newSession.name" placeholder="New Session Name">
+	
+		<button [disabled]="!newSession.name" (click)="add(newSession.name)">Go!</button>
+	</div>
+	<div *ngFor="let session of sessions" class=" session card">
+		<div class="card-body">
+			<div class="session-name">
+				<a routerLink="/session/{{session.id}}">
+					<h2>
+						<span>{{session.name}}</span>
+					</h2>
+				</a>
+			</div>
+			<div class="session-buttons">
+			</div>
 		</div>
 	</div>
 </div>
-<div>
-	<label for="session">Session Name: </label>
-	<input id="session" [(ngModel)]="newSession.name" placeholder="session name">
-</div>
-<button [disabled]="!newSession.name" (click)="add(newSession.name)">Add Session</button>
+
+

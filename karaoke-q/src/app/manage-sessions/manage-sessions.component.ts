@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { BrowserModule, Title } from '@angular/platform-browser';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { Session } from '../models/session';
 import { SessionService } from '../services/session.service';
@@ -14,7 +16,7 @@ import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 })
 export class ManageSessionsComponent implements OnInit {
 
-  sessions: Session[] = [];
+  @Input() sessions: Session[] = [];
   newSession: Session = {} as Session;
 
     faTrashAlt = faTrashAlt;
@@ -22,21 +24,18 @@ export class ManageSessionsComponent implements OnInit {
   constructor(private sessionService: SessionService, 
     private singerService: SingerService, 
     private slipService:SlipService, 
-    private router: Router) { }
+    private router: Router,
+    public activeModal: NgbActiveModal,
+    private title: Title, ) { }
 
   ngOnInit(): void {
-    this.getSessions();
-  }
-
-  getSessions(): void {
-    this.sessionService.getSessions().subscribe( sessions => {
-      this.sessions = sessions
-    })
+    this.title.setTitle('manage-sessions');
+    console.log('initialing ', this.title.getTitle());
   }
 
   delete(session: Session): void {
-    this.sessionService.deleteSession(session.id).subscribe( session => {
-      this.getSessions();
+    this.sessionService.deleteSession(session.id).subscribe( sessionResult => {
+      this.sessions = this.sessions.filter(obj => obj !== session);
     })    
     this.slipService.deleteSessionSlips(session.id).subscribe( result => {
       this.singerService.deleteSessionSingers(session.id).subscribe();
