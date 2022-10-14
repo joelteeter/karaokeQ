@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Singer } from '../models/singer';
 import { SingerService } from '../services/singer.service';
@@ -30,9 +31,12 @@ export class SingersComponent implements OnInit {
   editting: boolean = false;
   closeResult = '';
 
-  constructor(private singerService: SingerService, private slipService: SlipService, private modalService: NgbModal) { }
+  constructor(private singerService: SingerService, private slipService: SlipService, private modalService: NgbModal,
+              private title: Title, ) { }
 
   ngOnInit(): void {
+    this.title.setTitle('singers');
+    console.log('initialing ', this.title.getTitle());
   }
 
     open(content:any) {
@@ -90,6 +94,7 @@ export class SingersComponent implements OnInit {
     } else {
       console.log('adding singer', singer);
       this.singerService.addSinger(singer, this.sessionId).subscribe((singerResult) => {
+        console.log('heres the result of adding singer', singerResult);
         this.singers.push(singerResult);
         if(singer.song.id) {
           this.addSlip(singerResult, singer.song);
@@ -120,6 +125,7 @@ export class SingersComponent implements OnInit {
   }
 
   addSlip(singer: any, song: any) {
+    console.log('adding slip for new singer', singer, song);
     const lastPosition = Math.max(...this.slips.map(obj => obj.position));
     if(this.sessionId > 0 ) {
       this.slipService.addSlip(

@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { BrowserModule, Title } from '@angular/platform-browser';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { SessionService } from '../services/session.service';
 import { Singer } from '../models/singer';
 import { SingerService } from '../services/singer.service';
-
 import { Slip } from '../models/slip';
 import { SlipService } from '../services/slip.service';
 import { SongService } from '../services/song.service';
+import { SpinnerService } from '../services/spinner.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,7 +17,8 @@ import { SongService } from '../services/song.service';
 })
 export class DashboardComponent implements OnInit {
 
-  sessionId: any;
+  sessionId?: any;
+  session?: any = [];
   singers: Singer[] = [];
   slips: Slip[] = [];
   newSlip: any = null;
@@ -26,13 +29,34 @@ export class DashboardComponent implements OnInit {
   
   closeResult = '';
 
-  constructor(private singerService: SingerService, private slipService: SlipService, private songService: SongService, private modalService: NgbModal, private route: ActivatedRoute) { }
+  constructor(private singerService: SingerService, 
+              private slipService: SlipService, 
+              private songService: SongService,
+              private sessionService: SessionService,  
+              public spinnerService: SpinnerService,
+              private modalService: NgbModal, 
+              private route: ActivatedRoute,
+              private router: Router,
+              private title: Title ) { }
 
   ngOnInit(): void {
+    this.title.setTitle('dashboard');
+    console.log('initialing ', this.title.getTitle());
     this.route.paramMap.subscribe( (params: ParamMap) =>
       {
-
         this.sessionId = params.get('id');
+        this.sessionService.getSession(this.sessionId).subscribe( (result:any) => {
+          console.log(result);
+          if(result.length > 0) {
+            this.session = result;
+          } else {
+            //invalid session, go home
+            this.session = null;
+            this.router.navigate(['/']);
+          }
+        });
+
+
       }
     );
     this.getSingers();
@@ -42,7 +66,7 @@ export class DashboardComponent implements OnInit {
   open(content:any) {
 
     this.modalService.open(content, {
-      ariaLabelledBy: 'modal-basic-title',
+      ariaLabelledBy: 'how-to-karaoke',
       scrollable: true,
     }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;

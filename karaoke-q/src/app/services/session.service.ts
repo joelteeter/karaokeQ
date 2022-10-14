@@ -33,7 +33,7 @@ export class SessionService {
         );
   }
   getSession(id: number): Observable<Session> {
-    const url = `${this.sessionsUrl}/${id}';`
+    const url = `${this.sessionsUrl}/${id}`;
     this.logsService.add(`SessionService: fetched session id=$(id}`);
     return this.http.get<Session>(url)
       .pipe( 

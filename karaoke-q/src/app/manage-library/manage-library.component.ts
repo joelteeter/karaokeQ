@@ -1,11 +1,13 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { BrowserModule, Title } from '@angular/platform-browser';
+import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {CdkTableModule} from '@angular/cdk/table';
-
+import {Sort} from '@angular/material/sort';
 import { faFile } from '@fortawesome/free-solid-svg-icons';
 import { Song } from '../models/song';
+import { Slip } from '../models/slip';
 import { SongService } from '../services/song.service';
-import { YoutubeService } from '../services/youtube.service';
+import { SlipService } from '../services/slip.service';
 
 @Component({
   selector: 'app-manage-library',
@@ -13,22 +15,83 @@ import { YoutubeService } from '../services/youtube.service';
   styleUrls: ['./manage-library.component.scss']
 })
 export class ManageLibraryComponent implements OnInit {
-  @Input() slips:any[] = [];
 
   validSong:boolean = false;
   validatingSong:boolean = true;
   closeResult = '';
   dataSource:Song[] = [];
   displayedColumns: string[] = ['artist', 'title', 'embedurl', 'ops'];
+  slips:Slip[] = [];
+  searchTerm: string = '';
+  songs:Song[] = [];
 
   edittingSong:Song = {} as Song;
 
-  constructor(private songService: SongService, private youtubeService: YoutubeService, private modalService: NgbModal) { }
+  constructor(private songService: SongService,
+              private slipService: SlipService,
+              private modalService: NgbModal,
+              public activeModal: NgbActiveModal,
+              private title: Title, ) { }
 
   ngOnInit(): void {
+    this.title.setTitle('manage-library');
+    console.log('initialing ', this.title.getTitle());
     this.songService.getSongs().subscribe( (songs:any) => {
-      this.dataSource = songs.data;
+      console.log(songs);
+      this.songs = songs.data;
+      this.dataSource = [...songs.data];
     });
+
+    //this should be done better, currently getting all slips to validate a song deleted doesn't exist in any of them
+    this.slipService.getAllSlips().subscribe( (slips:any) => {
+      this.slips = slips;
+    }); 
+    
+  }
+
+  //push term into observable stream
+  search(term: string): void {
+    console.log(term);
+    this.dataSource = this.songs.filter( (el) => {
+      if(!el.title.toLowerCase().includes(term.toLowerCase()) && !el.artist.toLowerCase().includes(term.toLowerCase())){
+        return false
+      }
+      return true;
+    })
+  }
+
+  sortData(sort: Sort) {
+    const data = this.songs.slice();
+    if(!sort.active || sort.direction === '') {
+      this.dataSource = data;
+      return;
+    }
+
+    this.dataSource = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'artist':
+          return compare(a.artist, b.artist, isAsc);
+        case 'title':
+          return compare(a.title, b.title, isAsc);
+        default:
+          return 0;          
+      }
+    })
+  }
+
+  filterFlagged(): void {
+    this.dataSource = this.songs.filter( el => {
+      if(el.validation_requested) {
+        return true;
+      }
+      return false;
+    })
+  }
+
+  clearFilter(): void {
+    this.dataSource = [...this.songs];
+    this.searchTerm = '';
   }
 
   open(content:any) {
@@ -93,7 +156,7 @@ export class ManageLibraryComponent implements OnInit {
   deleteSong(song: any): void {
     console.log('deleting song', song);
     const slipExists = this.slips.filter(obj => {
-        return obj.song.id === song.id;
+        return obj.song!.id === song.id;
       });
     if(slipExists.length > 0) {
       alert('cannot delete a song currently queued!');
@@ -131,4 +194,8 @@ export class ManageLibraryComponent implements OnInit {
     }
   }
 
+}
+
+function compare(a: number | string, b: number | string, isAsc: boolean) {
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }

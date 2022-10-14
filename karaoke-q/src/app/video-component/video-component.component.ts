@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -18,9 +19,12 @@ export class VideoComponentComponent implements OnInit {
   screenWidth = 0;
   playerWidth = 0;
 
-  constructor(private modalService: NgbModal) { }
+  constructor(private modalService: NgbModal,
+              private title: Title, ) { }
 
   ngOnInit(): void {
+    this.title.setTitle('video-component');
+    console.log('initialing ', this.title.getTitle());
     this.screenWidth = window.innerWidth;
     if(this.screenWidth < 992) {
       this.playerWidth = this.screenWidth - 15;

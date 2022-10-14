@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 import { Slip } from '../models/slip';
@@ -21,10 +22,12 @@ export class SlipsComponent implements OnInit {
   faMinus = faMinus;
   isCollapsed = true;
 
-  constructor(private slipService: SlipService) { }
+  constructor(private slipService: SlipService,
+              private title: Title, ) { }
 
   ngOnInit(): void {
-
+    this.title.setTitle('slips');
+    console.log('initialing ', this.title.getTitle());
   }
 
   deleteSlip(slip: Slip): void {

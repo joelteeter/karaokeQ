@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { faFile } from '@fortawesome/free-solid-svg-icons';
 import { Song } from '../models/song';
@@ -17,9 +18,12 @@ export class UpdateLibraryComponent implements OnInit {
   closeResult = '';
   newSong: Song = {} as Song;
 
-  constructor(private songService: SongService, private youtubeService: YoutubeService, private modalService: NgbModal) { }
+  constructor(private songService: SongService, private youtubeService: YoutubeService, private modalService: NgbModal,
+              private title: Title, ) { }
 
   ngOnInit(): void {
+    this.title.setTitle('update-library');
+    console.log('initialing ', this.title.getTitle());
   }
 
   open(content:any) {
