@@ -1,6 +1,5 @@
 <div (window:resize)="onResizeHandler($event)" *ngIf="slipVideo.length > 0 ">
 	<div *ngIf="slipVideo[0].song && slipVideo[0].song.embedurl">
-
 		<youtube-player *ngIf="slipVideo[0].song && slipVideo[0].song.embedurl" videoId={{slipVideo[0].song!.embedurl}} 
 		(ready)="youTubeReady($event)"
 		(stateChange)="youTubeStateChange($event)"
@@ -8,7 +7,6 @@
 		(apiChange)="youTubeApiChange($event)"
 		[width]="playerWidth"
 		></youtube-player>
-
 	</div>
 </div>
 <div class="player-buttons-group d-flex justify-content-start p-2">
@@ -21,13 +19,11 @@
 		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
 	</div>
 	<div class="modal-body">
-
 			<div class="mb-3">
 				<h2>NEXT UP: {{slipVideo[1].singer.name}} singing {{slipVideo[1].song.title}}, {{slipVideo[1].song.artist}}</h2>
 				<div>Click ready to start singing!</div>
 				<div>Click cancel to manage the queue manually</div>
 			</div>
-
 	</div>
 	<div class="modal-footer">
 		<button [disabled]="false" type="button" class="btn btn-primary" (click)="modal.close('Save click')">Ready</button>

@@ -22,11 +22,10 @@ export class UpdateLibraryComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle('update-library');
-    console.log('initialing ', this.title.getTitle());
+    //console.log('initialing ', this.title.getTitle());
   }
 
   open(content:any) {
-
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       if(result === 'Save click') {
         if(this.newSong.artist && this.newSong.title && this.newSong.embedurl) {
@@ -57,7 +56,6 @@ export class UpdateLibraryComponent implements OnInit {
 
   checkForUrl(e:any): void {
     this.validatingSong = false;
-    console.log("checkforUrl validating song", this.validatingSong);
     //TODO: make this experience better
     //check for youtube link
     if(this.newSong.embedurl.toLowerCase().includes('?v=')) {
@@ -83,8 +81,6 @@ export class UpdateLibraryComponent implements OnInit {
   }
 
   youTubeReady(e:any) {
-    console.log('checking...');
-    console.log(e.target.playerInfo.videoData)
     if(e.target.playerInfo.videoData.isPlayable) {
       this.validSong = true;
     } else {
@@ -95,8 +91,6 @@ export class UpdateLibraryComponent implements OnInit {
   }
 
     youTubeStateChange(e:any) {
-    console.log('checking...');
-    console.log(e.target.playerInfo.videoData)
     if(e.target.playerInfo.videoData.isPlayable) {
       this.validSong = true;
     } else {

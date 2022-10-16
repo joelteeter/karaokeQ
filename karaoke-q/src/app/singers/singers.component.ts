@@ -31,12 +31,14 @@ export class SingersComponent implements OnInit {
   editting: boolean = false;
   closeResult = '';
 
-  constructor(private singerService: SingerService, private slipService: SlipService, private modalService: NgbModal,
+  constructor(private singerService: SingerService, 
+              private slipService: SlipService, 
+              private modalService: NgbModal,
               private title: Title, ) { }
 
   ngOnInit(): void {
     this.title.setTitle('singers');
-    console.log('initialing ', this.title.getTitle());
+    //console.log('initialing ', this.title.getTitle());
   }
 
     open(content:any) {
@@ -46,9 +48,8 @@ export class SingersComponent implements OnInit {
       size: 'xl',
       scrollable: true,
     }).result.then((result) => {
-      if(result === 'Save click') {
-
-        
+      if(result === 'Done click') {
+        //don't do anything        
       }
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -57,6 +58,7 @@ export class SingersComponent implements OnInit {
   }
 
   deleteSinger(singer: Singer): void {
+    //Need to delete the slips assigned to the singer being deleted as well
     this.singers = this.singers.filter(obj => obj !== singer);
     this.singerService.deleteSinger(singer.id).subscribe(() => {
       this.singersUpdate.emit(this.singers);
@@ -85,16 +87,15 @@ export class SingersComponent implements OnInit {
   }
 
   updateSinger(singer: any): void {
-    console.log('updaing singer', singer);
+    //Need to update the slips assigned to the updated singer as well
     if(!singer.song && singer.id) {
-      console.log('updating singer', singer);
+      //updating singer
       this.singerService.updateSinger(singer).subscribe(() => {
         this.updateSlips(singer);       
       })
     } else {
-      console.log('adding singer', singer);
+      //adding singer
       this.singerService.addSinger(singer, this.sessionId).subscribe((singerResult) => {
-        console.log('heres the result of adding singer', singerResult);
         this.singers.push(singerResult);
         if(singer.song.id) {
           this.addSlip(singerResult, singer.song);
@@ -125,7 +126,7 @@ export class SingersComponent implements OnInit {
   }
 
   addSlip(singer: any, song: any) {
-    console.log('adding slip for new singer', singer, song);
+    //adding slip for new singer, calc the position and push to array
     const lastPosition = Math.max(...this.slips.map(obj => obj.position));
     if(this.sessionId > 0 ) {
       this.slipService.addSlip(
@@ -143,7 +144,7 @@ export class SingersComponent implements OnInit {
     
   }
 
-    private getDismissReason(reason: any): string {
+  private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {

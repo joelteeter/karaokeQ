@@ -8,7 +8,6 @@ import { SingerService } from '../services/singer.service';
 import { Slip } from '../models/slip';
 import { SlipService } from '../services/slip.service';
 import { SongService } from '../services/song.service';
-import { SpinnerService } from '../services/spinner.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -32,7 +31,6 @@ export class DashboardComponent implements OnInit {
     private slipService: SlipService, 
     private songService: SongService,
     private sessionService: SessionService,  
-    public spinnerService: SpinnerService,
     private modalService: NgbModal, 
     private route: ActivatedRoute,
     private router: Router,
@@ -40,14 +38,13 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle('dashboard');
-    console.log('initialing ', this.title.getTitle());
+    //console.log('initialing ', this.title.getTitle());
 
     //Get valid session or redirect back to sessions component
     this.route.paramMap.subscribe( (params: ParamMap) =>
       {
         this.sessionId = params.get('id');
         this.sessionService.getSession(this.sessionId).subscribe( (result:any) => {
-          console.log(result);
           if(result.length > 0) {
             this.session = result;
           } else {
@@ -94,7 +91,6 @@ export class DashboardComponent implements OnInit {
       if(this.settings.isAutoBalanceQueue){
         this.balanceQueue();
       }
-      //console.log('here are the getSlips results', this.slips);
     });
   }
 
@@ -106,13 +102,11 @@ export class DashboardComponent implements OnInit {
     */
     let lastPosition = 0;
     if(this.slips.length > 0) {
-      //console.log('to find max position, this is the array to search', this.slips);
       lastPosition = Math.max(...this.slips.map(obj => obj.position));
     }
     
     slipToAdd.position = lastPosition ? lastPosition + 1 : 1;
     slipToAdd.sessionId = this.sessionId;
-    console.log('dashboard adding slip', slipToAdd)
     this.slipService.addSlip(slipToAdd).subscribe((slip) => {
       this.slips.push(slip);
       if(this.settings.isAutoBalanceQueue) {
@@ -133,7 +127,6 @@ export class DashboardComponent implements OnInit {
 
   updateSlips(slips: any): void {
     /* called when slips needs updating */
-    //console.log('slip dragged and dropped', slips);
     this.slips = slips;
     if(this.settings.isAutoBalanceQueue) {
       this.balanceQueue();

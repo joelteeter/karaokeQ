@@ -1,0 +1,24 @@
+<div class="modal-header">
+	<h4 class="modal-title" id="modal-basic-title">Edit Song</h4>
+	<button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss(null)"></button>
+</div>
+<div class="modal-body">
+	<div class="mb-3">
+		<div>
+			<label for="artist">Artist: </label>
+			<input id="artist" [(ngModel)]="edittingSong.artist" placeholder="artist" class="form-control mb-3">
+		</div>
+		<div>
+			<label for="title">Song Title: </label>
+			<input id="title" [(ngModel)]="edittingSong.title" placeholder="title" class="form-control mb-3">
+		</div>
+		<div>
+			<label for="embedurl">YouTube ID:</label>
+			<input id="embedurl" [(ngModel)]="edittingSong.embedurl" placeholder="5bCwue1d9Js" class="form-control mb-3">
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-primary" (click)="activeModal.close(edittingSong)">Save</button>
+	<button type="button" class="btn btn-danger" (click)="activeModal.close(null)">Cancel</button>
+</div>

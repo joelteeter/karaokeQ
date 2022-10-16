@@ -1,27 +1,43 @@
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpResponse, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
+import {
+  HttpRequest,
+  HttpHandler,
+  HttpEvent,
+  HttpInterceptor,
+} from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 import { SpinnerService } from './services/spinner.service';
 
-// credit to https://onthecode.co.uk/blog/angular-display-spinner-every-request/ for a very angular solution to all these spinners!
+// credit to https://zoaibkhan.com/blog/how-to-add-loading-spinner-in-angular-with-rxjs/ for a very angular solution to all these spinners!
 @Injectable()
 export class CustomHttpInterceptor implements HttpInterceptor {
-	
-	constructor(private spinnerService: SpinnerService) {}
 
-	intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  totalRequests = 0;
+  requestsCompleted = 0;
 
-		this.spinnerService.show();
+  constructor(private loader: SpinnerService) {}
 
-		return next.handle(req)
-			.pipe(tap((event: HttpEvent<any>) => {
-				if(event instanceof HttpResponse) {
-					this.spinnerService.hide();
-				}
-			}, (error) => {
-				this.spinnerService.hide();
-			}));
-	}
+  intercept(
+    request: HttpRequest<unknown>,
+    next: HttpHandler
+  ): Observable<HttpEvent<unknown>> {
+
+    this.loader.show();
+    this.totalRequests++;
+
+    return next.handle(request).pipe(
+      finalize(() => {
+
+        this.requestsCompleted++;
+
+        if (this.requestsCompleted === this.totalRequests) {
+          this.loader.hide();
+          this.totalRequests = 0; 
+          this.requestsCompleted = 0;
+        }
+      })
+    );
+  }
 }

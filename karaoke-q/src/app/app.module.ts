@@ -33,6 +33,7 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
 import { ManageLibraryComponent } from './manage-library/manage-library.component';
 import { SessionComponent } from './session/session.component';
 import { ManageSessionsComponent } from './manage-sessions/manage-sessions.component';
+import { EditSongComponent } from './edit-song/edit-song.component';
 
 
 @NgModule({
@@ -49,6 +50,7 @@ import { ManageSessionsComponent } from './manage-sessions/manage-sessions.compo
     ManageLibraryComponent,
     SessionComponent,
     ManageSessionsComponent,
+    EditSongComponent,
   ],
   imports: [
     BrowserModule,

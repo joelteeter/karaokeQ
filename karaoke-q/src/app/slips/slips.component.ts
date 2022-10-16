@@ -1,10 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-
 import { Slip } from '../models/slip';
 import { SlipService } from '../services/slip.service';
-
 import { faTrashAlt, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -27,13 +25,14 @@ export class SlipsComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle('slips');
-    console.log('initialing ', this.title.getTitle());
+    //console.log('initialing ', this.title.getTitle());
   }
 
   deleteSlip(slip: Slip): void {
     this.slips = this.slips.filter(obj => obj !== slip);
     if(slip.id) {
       this.slipService.deleteSlip(slip.id).subscribe();
+      //emmit to dashboard
       this.updatedSlips.emit(this.slips);
     }    
   }
@@ -46,6 +45,7 @@ export class SlipsComponent implements OnInit {
         }
         return obj;
       })
+    //emmit to dashboard
     this.updatedSlips.emit(this.slips);
 
   }

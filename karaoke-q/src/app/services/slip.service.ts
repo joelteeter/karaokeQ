@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 
 import { Slip } from '../models/slip';
-
 import { LogsService } from './logs.service';
-
-
 
 @Injectable({
   providedIn: 'root'
@@ -26,19 +23,19 @@ export class SlipService {
 
   /* GET */
   getSlips(sessionId?: number): Observable<Slip[]> {   
-    console.log('getting slips for session: ',sessionId);
+    this.logsService.add(`getting slips for session: ${sessionId}`);
     let params = new HttpParams();
     if(sessionId) {
       params = params.append('sessionid', sessionId);
     }
     return this.http.get<Slip[]>(this.slipsUrl, {params: params})
       .pipe(
-          tap(_ => this.log('fetched slips')),
-          catchError(this.handleError<Slip[]>('getSlips', []))
-        );
+        tap(_ => this.log('fetched slips')),
+        catchError(this.handleError<Slip[]>('getSlips', []))
+      );
   }
   getAllSlips(): Observable<Slip[]> {   
-    console.log('getting all slips');
+    this.logsService.add('getting all slips');
     return this.http.get<Slip[]>(this.slipsUrl)
       .pipe(
           tap(_ => this.log('fetched slips')),
@@ -67,7 +64,7 @@ export class SlipService {
 
   /* POST */
   addSlip(slip: Slip): Observable<Slip> {
-    console.log('adding slip',slip);
+    this.logsService.add('adding slip');
     return this.http.post<Slip>(this.slipsUrl, slip, this.httpOptions)
       .pipe(
         tap((newSlip: Slip) => this.log(`added slip w/ id=${newSlip.id}`)),

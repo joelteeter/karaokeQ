@@ -9,7 +9,7 @@ export class LogsService {
 
   add(log: string) {
     this.logs.push(log);
-    console.log(log);
+    //console.log(log);
   }
 
   clear() {

@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, forkJoin, Subject, BehaviorSubject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, map, tap, distinct, mergeMap, mergeAll, groupBy, reduce, toArray } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 
 import { Song } from '../models/song';
-
 import { LogsService } from './logs.service';
 
 @Injectable({
@@ -17,9 +16,7 @@ export class SongService {
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
-
-  
+  };  
 
   constructor(private logsService: LogsService, private http: HttpClient) { }
 
@@ -27,9 +24,9 @@ export class SongService {
   getSongs(): Observable<Song[]> {    
     return this.http.get<Song[]>(this.songsUrl)
       .pipe(
-          tap(_ => this.log('fetched songs')),
-          catchError(this.handleError<Song[]>('getSongs', []))
-        );
+        tap(_ => this.log('fetched songs')),
+        catchError(this.handleError<Song[]>('getSongs', []))
+      );
   }
 
   /* POST */

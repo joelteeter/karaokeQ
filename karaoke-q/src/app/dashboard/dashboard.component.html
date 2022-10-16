@@ -1,7 +1,3 @@
-<div class="mat-progress-spinner-wrapper">
-	<mat-spinner [diameter]="50" *ngIf="spinnerService.visibility | async">
-	</mat-spinner>
-</div>
 <header>
 	<div>
 		<h1 class="ms-3 mt-1"><span>Karaoke Queue</span>			
@@ -35,14 +31,11 @@
 			</div>
 		</ng-template>
 	</div>
-
 </header>
 
 <div *ngIf="session" class="container-fluid">
 	<div class="row">	
-
 		<div class="col-12 col-lg-3 order-2 order-lg-1 queue-col">
-
 			<app-slips [slips]="slips" (updatedSlips)="updateSlips($event)"></app-slips>
 		</div>
 		<div class="col-12 col-lg-9 order-1 order-lg-2 singers-col">
@@ -86,7 +79,6 @@
 			[settings]="settings" 
 			(videoPlayerStatus)="updateVideoPlayerStatus($event)"
 			></app-video-component>		
-
 		</div>
 	</div>
 </div>

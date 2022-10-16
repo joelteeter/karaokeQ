@@ -36,7 +36,8 @@ export class SongSearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle('song-search');
-    console.log('initialing ', this.title.getTitle());
+    //console.log('initialing ', this.title.getTitle());
+
     this.songSelected = null;
     this.songs$ = this.searchTerms.pipe(
       //time between checks
@@ -51,7 +52,7 @@ export class SongSearchComponent implements OnInit {
   }
 
   selectSong(song: Song): void {
-    //console.log('selecting song from song search', song);
+    //selecting song from song search
     this.songSelected = song;
     this.selectedSong.emit(this.songSelected);
     this.searchTerm = '';
