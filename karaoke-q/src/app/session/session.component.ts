@@ -9,7 +9,6 @@ import { SpinnerService } from '../services/spinner.service';
 import { ManageLibraryComponent } from '../manage-library/manage-library.component';
 import { ManageSessionsComponent } from '../manage-sessions/manage-sessions.component';
 
-
 @Component({
   selector: 'app-session',
   templateUrl: './session.component.html',
@@ -20,8 +19,8 @@ export class SessionComponent implements OnInit {
   sessions: Session[] = [];
   newSession: Session = {} as Session;
   magicWord: string = '';
-  isAdmin: boolean = false;
-  //isAdmin: boolean = true;
+  //isAdmin: boolean = false;
+  isAdmin: boolean = true;
 
   constructor(private sessionService: SessionService,
               private router: Router,
@@ -31,7 +30,7 @@ export class SessionComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle('sessions');
-    console.log('initialing ', this.title.getTitle());
+    //console.log('initialing ', this.title.getTitle());
     this.getSessions();
   }
 
@@ -57,10 +56,7 @@ export class SessionComponent implements OnInit {
     }
     this.sessionService.addSession({ name } as Session).subscribe( session => {
       this.sessions.push(session);
-      console.log('the created session', session);
       this.router.navigate([`/session/${session.id}`]);
-      //TODO: ensure session is coming from API correct
-      //TODO: goto route /session/session.id/ to show that sessions dashboard
     })
   }
 
@@ -99,8 +95,6 @@ export class SessionComponent implements OnInit {
       //on dismiss
       this.getSessions();
     });
-
-
   }
 
 }

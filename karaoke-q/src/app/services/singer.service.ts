@@ -1,21 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 
 import { Singer } from '../models/singer';
-
 import { LogsService } from './logs.service';
-
-
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class SingerService {
 
-  private singersUrl = 'http://localhost:3000/singers';  //web api
-  //private singersUrl = 'https://karaoke-q-api.herokuapp.com/singers';  //web api
+  //private singersUrl = 'http://localhost:3000/singers';  //web api
+  private singersUrl = 'https://karaoke-q-api.herokuapp.com/singers';  //web api
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -32,9 +30,9 @@ export class SingerService {
     }  
     return this.http.get<Singer[]>(this.singersUrl, {params: params})
       .pipe(
-          tap(_ => this.log('fetched singers')),
-          catchError(this.handleError<Singer[]>('getSingers', []))
-        );
+        tap(_ => this.log('fetched singers')),
+        catchError(this.handleError<Singer[]>('getSingers', []))
+      );
   }
   getSinger(id: number): Observable<Singer> {
     const url = `${this.singersUrl}/${id}';`

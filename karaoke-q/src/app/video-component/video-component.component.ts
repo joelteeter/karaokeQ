@@ -24,7 +24,9 @@ export class VideoComponentComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle('video-component');
-    console.log('initialing ', this.title.getTitle());
+    //console.log('initialing ', this.title.getTitle());
+
+    //TODO figure out a way to adjust screen size repsonsively
     this.screenWidth = window.innerWidth;
     if(this.screenWidth < 992) {
       this.playerWidth = this.screenWidth - 15;
@@ -39,25 +41,17 @@ export class VideoComponentComponent implements OnInit {
       document.body.appendChild(tag);
       this.apiLoaded = true;
     }
-
-    // (window as any).onYouTubeIframeAPIReady = (something:any) => {
-    //   console.log('its ready?');
-    // }
   }
 
   public onResizeHandler(event:any): void {
     //TODO: figure out a way to resize the iframe based on changing widths
     this.screenWidth = event.target.innerWidth;
-    //console.log(event.target.innerHeight);
   }
 
   open(content:any) {
-
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       if(result === 'Save click') {
-        this.videoPlayerStatus.emit('nextSinger');
-
-        
+        this.videoPlayerStatus.emit('nextSinger');        
       }
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -70,9 +64,9 @@ export class VideoComponentComponent implements OnInit {
   }
 
   youTubeReady(e:any) {
-    console.log(e);
-    console.log('player is ready now playing ', e.target.videoTitle);
-    console.log('playing song now', this.settings.autoPlay);
+    // console.log(e);
+    // console.log('player is ready now playing ', e.target.videoTitle);
+    // console.log('playing song now', this.settings.autoPlay);
     if(this.settings.autoPlay) {
       e.target.playVideo();
     }
@@ -89,14 +83,14 @@ export class VideoComponentComponent implements OnInit {
     3 – buffering
     5 – video cued
     */
-    console.log('player is changing state');
+    //console.log('player is changing state');
     switch(e.data) {
       case -1: 
-        console.log('player is unstarted ', e.target.videoTitle);
+        //console.log('player is unstarted ', e.target.videoTitle);
         break;
       
       case 0 :
-        console.log('player is ended ', e.target.videoTitle);
+        //console.log('player is ended ', e.target.videoTitle);
         if(this.slipVideo.length > 1) {
           this.open(this.content);
         } else {
@@ -105,39 +99,39 @@ export class VideoComponentComponent implements OnInit {
         break;        
       
       case 1 :
-        console.log('player is playing ', e.target.videoTitle);
+        //console.log('player is playing ', e.target.videoTitle);
         break;
       
       case 2 :
-        console.log('player is paused ', e.target.videoTitle);
+        //console.log('player is paused ', e.target.videoTitle);
         break;
       
       case 3 :
-        console.log('player is buffering ', e.target.videoTitle);
+        //console.log('player is buffering ', e.target.videoTitle);
         break;
       
       case 5 :
-        console.log('player is video cued ', e.target.videoTitle);
+        //console.log('player is video cued ', e.target.videoTitle);
         if(this.settings.autoPlay) {
           e.target.playVideo();
         }
         break;
       
       default: 
-        console.log('player is ???? ', e.target.videoTitle);
+        //console.log('player is ???? ', e.target.videoTitle);
         break;
       
     }
-    console.log(e);
+    //console.log(e);
 
   }
   youTubeError(e:any) {
-    console.log('player has errored!');
-    console.log(e);
+    //console.log('player has errored!');
+    //console.log(e);
   }
   youTubeApiChange(e:any) {
-    console.log('player api change');
-    console.log(e);
+    //console.log('player api change');
+    //console.log(e);
   }
 
   private getDismissReason(reason: any): string {

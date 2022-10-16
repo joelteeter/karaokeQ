@@ -1,1 +1,6 @@
+<ng-container *ngIf="loading$ | async">
+	<div  class="mat-progress-spinner-wrapper">
+  		<mat-progress-spinner [mode]="'indeterminate'"></mat-progress-spinner>
+  	</div>
+</ng-container>
 <router-outlet></router-outlet>

@@ -6,7 +6,6 @@ import { Singer } from '../models/singer';
 import { Song } from '../models/song';
 import { Slip } from '../models/slip';
 import { SlipService } from '../services/slip.service';
-
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -22,7 +21,6 @@ export class SlipDetailComponent implements OnInit {
 
   selectedSinger: any = {};
   selectedSong: any = {};
-
   closeResult = '';
   faEdit = faEdit;
 
@@ -31,7 +29,7 @@ export class SlipDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle('slip-detail');
-    console.log('initialing ', this.title.getTitle());
+    //console.log('initialing ', this.title.getTitle());
   }
 
   open(content:any) {
@@ -43,24 +41,14 @@ export class SlipDetailComponent implements OnInit {
     }
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       if(result === 'Save click') {
-        //console.log('saving slip from modal', this.slip);
+        //saving slip from modal
         this.saveSlip(this.slip);
       }
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
-  }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
-  }
+  }  
 
   selectSinger(singer:Singer) {
     this.selectedSinger = singer;
@@ -81,5 +69,15 @@ export class SlipDetailComponent implements OnInit {
       });
     }
 
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
   }
 }

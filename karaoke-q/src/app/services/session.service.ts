@@ -1,21 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 
 import { Session } from '../models/session';
-
 import { LogsService } from './logs.service';
-
-
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class SessionService {
 
-  private sessionsUrl = 'http://localhost:3000/sessions';  //localhost api
-  //private sessionsUrl = 'https://karaoke-q-api.herokuapp.com/sessions';  //web api
+  //private sessionsUrl = 'http://localhost:3000/sessions';  //localhost api
+  private sessionsUrl = 'https://karaoke-q-api.herokuapp.com/sessions';  //web api
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -28,9 +26,9 @@ export class SessionService {
   getSessions(): Observable<Session[]> {  
     return this.http.get<Session[]>(this.sessionsUrl)
       .pipe(
-          tap(_ => this.log('fetched sessions')),
-          catchError(this.handleError<Session[]>('getSessions', []))
-        );
+        tap(_ => this.log('fetched sessions')),
+        catchError(this.handleError<Session[]>('getSessions', []))
+      );
   }
   getSession(id: number): Observable<Session> {
     const url = `${this.sessionsUrl}/${id}`;
