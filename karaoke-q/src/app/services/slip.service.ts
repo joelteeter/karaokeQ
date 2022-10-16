@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
@@ -11,15 +12,18 @@ import { LogsService } from './logs.service';
 })
 export class SlipService {
 
-  private slipsUrl = 'http://localhost:3000/slips';  //web api
-  //private slipsUrl = 'https://karaoke-q-api.herokuapp.com/slips';  //web api
+  private slipsUrl = '/slips';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
 
   constructor(private logsService: LogsService,
-    private http: HttpClient) { }
+    private http: HttpClient) { 
+      if(environment && environment.apiUrl) {
+        this.slipsUrl = environment.apiUrl + this.slipsUrl;
+      }
+    }
 
   /* GET */
   getSlips(sessionId?: number): Observable<Slip[]> {   

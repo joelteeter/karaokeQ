@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
@@ -12,15 +13,18 @@ import { LogsService } from './logs.service';
 
 export class SessionService {
 
-  private sessionsUrl = 'http://localhost:3000/sessions';  //localhost api
-  //private sessionsUrl = 'https://karaoke-q-api.herokuapp.com/sessions';  //web api
+  private sessionsUrl = '/sessions';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
 
   constructor(private logsService: LogsService,
-    private http: HttpClient) { }
+    private http: HttpClient) {
+      if(environment && environment.apiUrl) {
+        this.sessionsUrl = environment.apiUrl + this.sessionsUrl;
+      }
+    }
 
   /* GET */
   getSessions(): Observable<Session[]> {  
