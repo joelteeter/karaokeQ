@@ -1,9 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { Observable, Subject } from 'rxjs';
-import {
-   debounceTime, distinctUntilChanged, switchMap
- } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 import { Song } from '../models/song';
 import { SongService } from '../services/song.service';
