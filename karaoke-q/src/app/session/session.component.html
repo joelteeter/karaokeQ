@@ -15,10 +15,10 @@
 	<hr/>
 	<p> Select a session, or add a new session </p>
 	<div class="mb-2">
-		<label for="session">Session Name: </label>
+		<label for="session" class="me-2">Session Name: </label>
 		<input id="session" [(ngModel)]="newSession.name" placeholder="New Session Name" class="form-control d-inline me-2">
 	
-		<button [disabled]="!newSession.name" (click)="add(newSession.name)" class="btn btn-primary">Go!</button>
+		<button [disabled]="!newSession.name" (click)="add(newSession.name)" class="btn btn-primary me-0">Go!</button>
 	</div>
 	<div *ngFor="let session of sessions" class=" session card">
 		<div class="card-body">

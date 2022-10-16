@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from '../../environments/environment';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
@@ -19,8 +20,7 @@ export class SessionComponent implements OnInit {
   sessions: Session[] = [];
   newSession: Session = {} as Session;
   magicWord: string = '';
-  //isAdmin: boolean = false;
-  isAdmin: boolean = true;
+  isAdmin: boolean = false;
 
   constructor(private sessionService: SessionService,
               private router: Router,
@@ -32,6 +32,11 @@ export class SessionComponent implements OnInit {
     this.title.setTitle('sessions');
     //console.log('initialing ', this.title.getTitle());
     this.getSessions();
+
+    //check env isAdmin
+    if(environment && environment.isAdmin) {
+      this.isAdmin = true;
+    }
   }
 
   getSessions(): void {

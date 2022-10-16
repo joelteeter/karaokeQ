@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 import { Observable, of, forkJoin, Subject, BehaviorSubject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
@@ -11,14 +12,17 @@ import { LogsService } from './logs.service';
 })
 export class SongService {
 
-  private songsUrl = 'http://localhost:3000/songs';  //web api
-  //private songsUrl = 'https://karaoke-q-api.herokuapp.com/songs';  //web api
+  private songsUrl = '/songs';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };  
 
-  constructor(private logsService: LogsService, private http: HttpClient) { }
+  constructor(private logsService: LogsService, private http: HttpClient) { 
+    if(environment && environment.apiUrl) {
+      this.songsUrl = environment.apiUrl + this.songsUrl;
+    }
+  }
 
   /* GET */
   getSongs(): Observable<Song[]> {    
