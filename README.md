@@ -2,6 +2,8 @@
 an app for karaoke'ing
 uses a RESTful api for http requests here https://github.com/joelteeter/karaokeQ-api
 
+Features, bugs, todos, and more info can be found here https://joelteeter.com/karaoke-queue/
+
 How to use this?
 
 How to add a new song to the library?
