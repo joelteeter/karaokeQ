@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {CdkDragDrop} from '@angular/cdk/drag-drop';
 import { Slip } from '../models/slip';
 import { SlipService } from '../services/slip.service';
 import { faTrashAlt, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
@@ -50,33 +50,29 @@ export class SlipsComponent implements OnInit {
 
   }
   drop(event: CdkDragDrop<string[]>) {
-    //TODO: move this to the backend, send slip ID, prev pos, current pos - expect a result of... array of slips ordered correctly and then sort them by that order on frontend?
+    //heavy lifting moved to back end
+    //TODO: there's a very brief loading spinner or somthing else funky going on with the queue refreshing, look into this
+    //still WAY faster than it was doing this on front end
+
     //previousIndex is the item BEING dragged
-    //currentIndex is the WHERE it is being dragged
+    //currentIndex is the WHERE it is being dragged     
 
-    const droppedPosition = this.slips[event.currentIndex].position;
+    
     if(event.previousIndex != event.currentIndex) {
-      //if moving DOWN the queue, need to offset things above its drop point
-      //if moving UP the queue, need to offset things below its drop point
-      //Then need to update the thing being dropped
+      
+      const payload = {
+        slip : this.slips[event.previousIndex],
+        draggedFrom : event.previousIndex,
+        draggedTo : event.currentIndex,
+        slips : this.slips,
+      };
 
-      if(event.previousIndex < event.currentIndex) {
-        //was moved DOWN the queue
-        for(let i=event.previousIndex; i <= event.currentIndex; i ++) {
-          this.slips[i].position -= 1;
-          this.slipService.updateSlip(this.slips[i]).subscribe();
-        }
-      } else if (event.previousIndex > event.currentIndex) {
-        //was moved UP the queue
-        for(let i=event.currentIndex; i < event.previousIndex; i++) {
-          this.slips[i].position += 1;
-          this.slipService.updateSlip(this.slips[i]).subscribe();
-        }
-      }
-      this.slips[event.previousIndex].position = droppedPosition;
-      this.slipService.updateSlip(this.slips[event.previousIndex]).subscribe();
-      moveItemInArray(this.slips, event.previousIndex, event.currentIndex);
-      this.updatedSlips.emit(this.slips);
+      this.slipService.dragDropSlip(payload).subscribe( result => {
+        this.slips = result;
+        //emmit to dashboard
+        this.updatedSlips.emit(this.slips);
+      });  
+      
     }
   }
   
