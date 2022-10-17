@@ -59,6 +59,7 @@ export class SlipService {
         catchError(this.handleError<Slip[]>('getSlips', []))
       );
   }
+
   getSlip(id: number): Observable<Slip> {
     const url = `${this.slipsUrl}/${id}';`
     this.logsService.add(`SlipService: fetched slip id=$(id}`);
@@ -86,6 +87,22 @@ export class SlipService {
       .pipe(
         tap((newSlip: Slip) => this.log(`added slip w/ id=${newSlip.id}`)),
         catchError(this.handleError<Slip>('addSlip'))
+      );
+  }
+  updateBalancedSlips(slips: Slip[]): Observable<any> {
+    const url = `${this.slipsUrl}/balance/`;
+    return this.http.post(url, slips, this.httpOptions)
+      .pipe(        
+        tap(_ => this.log(`balanced ${slips.length} slips`)),
+        catchError(this.handleError<any>('updateSlip'))
+      );
+  }
+  dragDropSlip(payload: any): Observable<any> {
+    const url = `${this.slipsUrl}/dragdrop/`;
+    return this.http.post(url, payload, this.httpOptions)
+      .pipe(        
+        tap(_ => this.log(`updated slips on drag drop`)),
+        catchError(this.handleError<any>('updateSlip'))
       );
   }
 

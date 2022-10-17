@@ -142,11 +142,10 @@ export class ManageLibraryComponent implements OnInit {
   deleteSong(song: any): void {
     //get all slips by song id, if any exist can't delete
     //TODO: confirmation to delete any slips with the song id or maybe a link to the session
-    this.slipService.getSlipsBySongId(song.id).subscribe( (asdf:any) => {
-      console.log(asdf);
-      if(asdf.length > 0) {
+    this.slipService.getSlipsBySongId(song.id).subscribe( (slips:any) => {
+      if(slips.length > 0) {
         let sessions = 'slips exist in sessions: ';
-        asdf.forEach( (slip:any) => {
+        slips.forEach( (slip:any) => {
           sessions += slip.sessionId+',';
         })
         alert('cannot delete a song currently queued! ' + sessions);
