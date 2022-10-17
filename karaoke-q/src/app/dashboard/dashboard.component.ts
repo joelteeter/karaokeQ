@@ -154,42 +154,49 @@ export class DashboardComponent implements OnInit {
 
   balanceQueue(): void {
     /*
-      there has GOT to be a slicker way to do this...
       i'm breaking down the queue into peices with unique singers, then combining those pieces.
       each piece is a map of singer and song, if a slip has a singer who is already in a piece/map 
       then I add them to the next one that doesn't
-      */
+    */
+    //TODO: move this to the backend, getSlipsBySessionId expect a result of array slip id, pos pairs then sort frontend's array accordingly
 
-      const mapArray:any = [];
-      const singerMap = new Map();
+    const mapArray:any = [];
+    const singerMap = new Map();
 
     //set the singer map, i can use this to determine how many pieces/maps I need
+    //  foreach slip, map singer, to how many songs they have
+    //  the max will be how many 'chunks' of the queue i need
     for(let i = 0; i < this.slips.length; i++) {
-      if(singerMap.has(this.slips[i].singer!.name)) {
-        singerMap.set(this.slips[i].singer!.name, singerMap.get(this.slips[i].singer!.name) + 1)
+      if(singerMap.has(this.slips[i].singer!.id)) {
+        singerMap.set(this.slips[i].singer!.id, singerMap.get(this.slips[i].singer!.id) + 1)
       } else {
-        singerMap.set(this.slips[i].singer!.name, 1)
+        singerMap.set(this.slips[i].singer!.id, 1)
       }
     }
     const maxMaps = Math.max(...singerMap.values());
 
     //create the pieces/maps
+    // creating them in memory so i loop through them and can assign values later
     for(let j = 0; j < maxMaps; j++) {
       mapArray.push(new Map());
     }
     
     //sort the slips into the pieces
+    //  for each slip, see if a piece has a slip for the slip's singer
+    //    if so, skip this piece and go on to the next
+    //    if not, add this slip into the piece
     for(let s = 0; s < this.slips.length; s++) {
       for(let m = 0; m < maxMaps; m++) {
         //if singer doesn't have a slip in map[m], add one, then break from sub loop
-        if(!mapArray[m].has(this.slips[s].singer!.name)){
-          mapArray[m].set(this.slips[s].singer!.name, this.slips[s]);
+        if(!mapArray[m].has(this.slips[s].singer!.id)){
+          mapArray[m].set(this.slips[s].singer!.id, this.slips[s]);
           break;
         }
       }
     }
 
-    //now for each piece, I grab the slips and push them to what will be the new queue;
+    //now for each piece, I grab the slips within and push them to what will be the new queue;
+    // TODO: this mass update isn't great, could possibly send an array of just slip id and pos instead of so many smaller updates...
     let newQueue:any[] = [];
     let count = 1;
     mapArray.forEach((map:any) => {

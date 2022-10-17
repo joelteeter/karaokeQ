@@ -50,6 +50,7 @@ export class SlipsComponent implements OnInit {
 
   }
   drop(event: CdkDragDrop<string[]>) {
+    //TODO: move this to the backend, send slip ID, prev pos, current pos - expect a result of... array of slips ordered correctly and then sort them by that order on frontend?
     //previousIndex is the item BEING dragged
     //currentIndex is the WHERE it is being dragged
 

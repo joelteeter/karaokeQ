@@ -46,6 +46,19 @@ export class SlipService {
           catchError(this.handleError<Slip[]>('getSlips', []))
         );
   }
+  /* GET */
+  getSlipsBySongId(songId?: number): Observable<Slip[]> {   
+    this.logsService.add(`getting slips for session: ${songId}`);
+    let params = new HttpParams();
+    if(songId) {
+      params = params.append('songid', songId);
+    }
+    return this.http.get<Slip[]>(this.slipsUrl+'/search', {params: params})
+      .pipe(
+        tap(_ => this.log('fetched slips')),
+        catchError(this.handleError<Slip[]>('getSlips', []))
+      );
+  }
   getSlip(id: number): Observable<Slip> {
     const url = `${this.slipsUrl}/${id}';`
     this.logsService.add(`SlipService: fetched slip id=$(id}`);
