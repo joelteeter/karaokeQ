@@ -86,18 +86,16 @@ export class UpdateLibraryComponent implements OnInit {
     } else {
       this.validSong = false;
       //this.validatingSong = false;
-    }
-    
+    }    
   }
 
-    youTubeStateChange(e:any) {
+  youTubeStateChange(e:any) {
     if(e.target.playerInfo.videoData.isPlayable) {
       this.validSong = true;
     } else {
       this.validSong = false;
       //this.validatingSong = false;
     }
-
   }
 
   submitNewSong(): void {

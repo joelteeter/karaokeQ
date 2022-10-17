@@ -140,15 +140,16 @@ export class ManageLibraryComponent implements OnInit {
   }
   
   deleteSong(song: any): void {
-    //this should be done better?, currently getting all slips to validate a song deleted doesn't exist in any of them
-    //perhaps move to back end with a related returned result?
-    this.slipService.getAllSlips().subscribe( (slips:any) => {
-      this.slips = slips;
-      const slipExists = this.slips.filter(obj => {
-        return obj.song!.id === song.id;
-      });
-      if(slipExists.length > 0) {
-        alert('cannot delete a song currently queued!');
+    //get all slips by song id, if any exist can't delete
+    //TODO: confirmation to delete any slips with the song id or maybe a link to the session
+    this.slipService.getSlipsBySongId(song.id).subscribe( (asdf:any) => {
+      console.log(asdf);
+      if(asdf.length > 0) {
+        let sessions = 'slips exist in sessions: ';
+        asdf.forEach( (slip:any) => {
+          sessions += slip.sessionId+',';
+        })
+        alert('cannot delete a song currently queued! ' + sessions);
       } else {
         if(window.confirm('This will permanently remove this song from the library! Procede?')) {
           this.songService.deleteSong(song.id).subscribe( result => {
