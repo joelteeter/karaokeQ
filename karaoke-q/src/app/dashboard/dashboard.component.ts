@@ -62,6 +62,10 @@ export class DashboardComponent implements OnInit {
     this.getSlips();
   }
 
+  goToSessions(): void {
+    this.router.navigate(['/']);
+  }
+
   //How to modal
   openHowTo(content:any) {
     this.modalService.open(content, {

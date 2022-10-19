@@ -4,7 +4,7 @@
 			<button type="button" class="btn btn-outline-secondary ms-3" (click)="openHowTo(popHowToContent)">
 				How to use this?
 			</button>
-			<a class="sessions-link" href="/">Sessions</a>			
+			<a (click)="goToSessions()" href="" class="sessions-link">Sessions</a>			
 		</h1>
 
 		<ng-template #popHowToContent let-modal>
