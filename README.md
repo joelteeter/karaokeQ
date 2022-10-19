@@ -5,6 +5,7 @@ uses a RESTful api for http requests here https://github.com/joelteeter/karaokeQ
 Features, bugs, todos, and more info can be found here https://joelteeter.com/karaoke-queue/
 
 How to use this?
+In general you'll want to enter or create a session, then add singers (with or without a song/slip), then add slips for the singers
 
 How to add a new song to the library?
 First you'll need to find the song on YouTube, usually searching for "[song name] karaoke" will do the trick.  Then you need to copy the video ID. That's the part after the ?v= in the video's url. For example: https://www.youtube.com/watch?v=dQw4w9WgXcQ the ID is dQw4w9WgXcQ. *You can also paste either the youtube video url, or the embed link and I'll get the ID for you :)
@@ -12,7 +13,7 @@ Now click the "Songs" menu item, then click "Add New Song To Library", fill in t
 Then click the "Check Song" button, you should see a message as if the song should work or not, but the best check is to see if the preview video will play.
 If all is good, click the "Save" button and the song will be added to the library
 
-How to add a new slip / song?
+How to add a new slip (singer + song)?
 Click "Queue" menu, then click the "New Slip" button, then choose a singer and search for the song. Then click "Save".
 
 How to add a new singer?
