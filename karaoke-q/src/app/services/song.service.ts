@@ -84,42 +84,6 @@ export class SongService {
     );
   }
 
-  // searchSongs(term: string): Observable<Song[]> {
-  //   if(!term.trim()) {
-  //     //no search term, no serach results
-  //     return of([]);
-  //   }
-  //   let byTitle = this.http.get<Song[]>(`${this.songsUrl}/?title=${term}`);
-  //   let byArtist = this.http.get<Song[]>(`${this.songsUrl}/?artist=${term}`);
-
-  //   //TODO: do this on the back end, this is... a thing
-  //   return forkJoin(
-  //     [
-  //       byTitle, 
-  //       byArtist
-  //     ]
-  //   ).pipe (
-  //       map(([byTitleArray, byArtistArray]) =>  [...byTitleArray, ...byArtistArray]),
-        
-  //       // Emit each item individually
-  //       mergeAll(),
-
-  //       // Group by their id
-  //       groupBy(o => o.id),
-
-  //       // For each separate group, reduce to one
-  //       mergeMap(
-  //         grp$ => grp$.pipe(
-  //           reduce((song) => song),
-  //         ),
-  //       ),
-
-  //       // At the end, collect all the objects in an array
-  //       toArray(),
-        
-  //   )
-  // }
-
   /** Log a SongService message with the MessageService */
   private log(message: string) {
     this.logsService.add(`SongService: ${message}`);
