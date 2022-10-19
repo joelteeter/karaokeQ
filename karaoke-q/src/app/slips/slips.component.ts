@@ -26,6 +26,7 @@ export class SlipsComponent implements OnInit {
   }
 
   deleteSlip(slip: Slip): void {
+    //delete a slip, then emmit to dashboard
     this.slips = this.slips.filter(obj => obj !== slip);
     if(slip.id) {
       this.slipService.deleteSlip(slip.id).subscribe();
@@ -35,6 +36,7 @@ export class SlipsComponent implements OnInit {
   }
 
   editSlip(slip: any): void {
+    //edit a slip, then emmit to dashboard
     this.slipService.updateSlip(slip).subscribe();
     this.slips = this.slips.map( (obj) => {
         if(obj.id === slip.id) {
@@ -47,14 +49,11 @@ export class SlipsComponent implements OnInit {
 
   }
   drop(event: CdkDragDrop<string[]>) {
-    //heavy lifting moved to back end
     //TODO: there's a very brief loading spinner or somthing else funky going on with the queue refreshing, look into this
-    //still WAY faster than it was doing this on front end
+    //started happening when moved to backend, look into the material drag/drop
 
     //previousIndex is the item BEING dragged
-    //currentIndex is the WHERE it is being dragged     
-
-    
+    //currentIndex is the WHERE it is being dragged         
     if(event.previousIndex != event.currentIndex) {
       
       const payload = {

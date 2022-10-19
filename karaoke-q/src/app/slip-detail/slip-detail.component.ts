@@ -30,6 +30,8 @@ export class SlipDetailComponent implements OnInit {
   }
 
   open(content:any) {
+    //Open slip detail modal with the content template
+    //TODO: make this a modal with it's own component - like manage-library
     this.selectedSong = null;
     if(this.slip) {
       this.selectedSinger = this.slip.singer;
@@ -56,6 +58,7 @@ export class SlipDetailComponent implements OnInit {
   }
 
   saveSlip(slip: any = null): void {
+    //emmits saved slip to parent (dashboard or slips)
     if(slip) {
       this.newSlip.emit({...slip, song: this.selectedSong });
     } else {

@@ -23,14 +23,12 @@ export class UpdateLibraryComponent implements OnInit {
   }
 
   open(content:any) {
+    //new song modal
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       if(result === 'Save click') {
         if(this.newSong.artist && this.newSong.title && this.newSong.embedurl) {
-          this.submitNewSong();
-          
-        }
-        
-        
+          this.submitNewSong();          
+        }             
       }
       this.validSong = false;
       this.newSong = {} as Song;
@@ -42,18 +40,20 @@ export class UpdateLibraryComponent implements OnInit {
   }
 
   checkSong(): void {
-    this.validatingSong = true;
-    
+    //check song button click
+    this.validatingSong = true;    
   }
 
   hideVideo(): void {
+    //hide video when not checking
     this.validatingSong = false;
   }
 
-
   checkForUrl(e:any): void {
-    this.validatingSong = false;
-    //TODO: make this experience better
+    //input for a videoID or attempts to parse an ID from a youtube url with a videoID, or a youtube embed link with a videoID
+
+    this.validatingSong = false;    
+
     //check for youtube link
     if(this.newSong.embedurl.toLowerCase().includes('?v=')) {
       //is a youtube link - should have ?v=xxxxxx as a query parameter
@@ -78,6 +78,7 @@ export class UpdateLibraryComponent implements OnInit {
   }
 
   youTubeReady(e:any) {
+    //api callback from player
     if(e.target.playerInfo.videoData.isPlayable) {
       this.validSong = true;
     } else {
@@ -87,6 +88,7 @@ export class UpdateLibraryComponent implements OnInit {
   }
 
   youTubeStateChange(e:any) {
+    //api callback from player
     if(e.target.playerInfo.videoData.isPlayable) {
       this.validSong = true;
     } else {

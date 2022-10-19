@@ -9,6 +9,7 @@ import { delay } from 'rxjs/operators';
 })
 export class AppComponent {
 
+  //set loading according to interceptor
   loading$ = this.spinnerService.loading$.pipe(delay(0));
   title = 'karaoke-queu';
 

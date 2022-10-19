@@ -21,6 +21,7 @@ export class SingerDetailComponent implements OnInit {
   selectedSinger: Singer = {} as Singer;
   selectedSong: Song = {} as Song;
 
+  //using reactive forms, probably overkill...
   singerForm = this.fb.group({
     singerName: ['', Validators.required]
   });
@@ -29,6 +30,7 @@ export class SingerDetailComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    //singer form change
     this.updateSinger(this.singerToEdit);
   }
 
