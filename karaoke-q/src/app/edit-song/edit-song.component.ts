@@ -10,10 +10,9 @@ import { Song } from '../models/song';
 })
 export class EditSongComponent implements OnInit {
 
-  @Input() edittingSong:Song = {} as Song;
+  //TODO: add a video player preview to ensure videos work - similar to update-library component
 
-  validSong:boolean = false;
-  validatingSong:boolean = true;
+  @Input() edittingSong:Song = {} as Song;
 
   constructor(public activeModal: NgbActiveModal) { }
 

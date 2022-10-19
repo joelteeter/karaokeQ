@@ -17,9 +17,11 @@ import { EditSongComponent } from '../edit-song/edit-song.component';
 })
 
 export class ManageLibraryComponent implements OnInit {
-
+  
+  //mat table dataSource and columns
   dataSource:Song[] = [];
   displayedColumns: string[] = ['artist', 'title', 'embedurl', 'ops'];
+
   slips:Slip[] = [];
   searchTerm: string = '';
   songs:Song[] = [];
@@ -39,6 +41,7 @@ export class ManageLibraryComponent implements OnInit {
   }
 
   search(term: string): void {
+    //filter songs by term
     this.dataSource = this.songs.filter( (el) => {
       if(!el.title.toLowerCase().includes(term.toLowerCase()) && !el.artist.toLowerCase().includes(term.toLowerCase())){
         return false
@@ -48,6 +51,7 @@ export class ManageLibraryComponent implements OnInit {
   }
 
   sortData(sort: Sort) {
+    //mat table sorting on columns
     const data = this.songs.slice();
     if(!sort.active || sort.direction === '') {
       this.dataSource = data;
@@ -68,6 +72,7 @@ export class ManageLibraryComponent implements OnInit {
   }
 
   filterFlagged(): void {
+    //filter songs flagged as validation requested
     this.dataSource = this.songs.filter( el => {
       if(el.validation_requested) {
         return true;
@@ -77,11 +82,13 @@ export class ManageLibraryComponent implements OnInit {
   }
 
   clearFilter(): void {
+    //clear all filters/sorting
     this.dataSource = this.songs.slice();
     this.searchTerm = '';
   }
 
   openEditModal(song: Song): void {
+    //edit song modal
     const modalRef = this.modalService.open(EditSongComponent, {
       ariaLabelledBy: 'manage-sessions',
       scrollable: true,
@@ -92,7 +99,7 @@ export class ManageLibraryComponent implements OnInit {
     modalRef.componentInstance.edittingSong = {...song};
 
     //data coming from 'child' save click
-    //on save, call api endpoint, update dataSource(shallow copy of songs), and update songs in case filters are rest
+    //on save, call api endpoint, update dataSource(shallow copy of songs), and update songs in case filters are reset
     //on anything else do nothing as it was cancelled
     modalRef.result.then( (data) => {
       //on close
@@ -125,6 +132,7 @@ export class ManageLibraryComponent implements OnInit {
   }
 
   validateSong(song: any): void {
+    //update song to clear validation requested
     song.validation_requested = false;
     this.songService.updateSong(song).subscribe( () => {
       this.dataSource.forEach((s:any) => {

@@ -32,7 +32,6 @@ export class SongSearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.songSelected = null;
     this.songs$ = this.searchTerms.pipe(
       //time between checks

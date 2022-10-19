@@ -33,6 +33,7 @@ export class VideoComponentComponent implements OnInit {
     if (!this.apiLoaded) {
       // This code loads the IFrame Player API code asynchronously, according to the instructions at
       // https://developers.google.com/youtube/iframe_api_reference#Getting_Started
+      // loading it this way doesn't let me fit it into a containing div though...
       const tag = document.createElement('script');
       tag.src = 'https://www.youtube.com/iframe_api';
       document.body.appendChild(tag);
@@ -46,6 +47,7 @@ export class VideoComponentComponent implements OnInit {
   }
 
   open(content:any) {
+    //next singer modal
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       if(result === 'Save click') {
         this.videoPlayerStatus.emit('nextSinger');        
@@ -57,10 +59,12 @@ export class VideoComponentComponent implements OnInit {
   }
 
   requestValidation():void {
+    //request video validated by admin
     this.videoPlayerStatus.emit('requestValidation');
   }
 
   youTubeReady(e:any) {
+    //api callback from player
     // console.log(e);
     // console.log('player is ready now playing ', e.target.videoTitle);
     // console.log('playing song now', this.settings.autoPlay);
@@ -70,6 +74,7 @@ export class VideoComponentComponent implements OnInit {
     
   }
   youTubeStateChange(e:any) {
+    //api callback from player
     /*
     .data - the state value
     .target - the player
@@ -87,7 +92,7 @@ export class VideoComponentComponent implements OnInit {
         break;
       
       case 0 :
-        //console.log('player is ended ', e.target.videoTitle);
+        //video done playing, open the next singer modal
         if(this.slipVideo.length > 1) {
           this.open(this.content);
         } else {
@@ -108,6 +113,7 @@ export class VideoComponentComponent implements OnInit {
         break;
       
       case 5 :
+        //video is ready to play, if autoplay setting then play the video
         //console.log('player is video cued ', e.target.videoTitle);
         if(this.settings.autoPlay) {
           e.target.playVideo();
@@ -123,10 +129,12 @@ export class VideoComponentComponent implements OnInit {
 
   }
   youTubeError(e:any) {
+    //api callback from player
     //console.log('player has errored!');
     //console.log(e);
   }
   youTubeApiChange(e:any) {
+    //api callback from player
     //console.log('player api change');
     //console.log(e);
   }

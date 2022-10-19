@@ -38,7 +38,6 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle('Karaoke Queue Session Dashboard');
-    //console.log('initialing ', this.title.getTitle());
 
     //Get valid session or redirect back to sessions component
     this.route.paramMap.subscribe( (params: ParamMap) =>
@@ -58,11 +57,12 @@ export class DashboardComponent implements OnInit {
     );
 
     //TODO: move getSingers to child components? would probably need to have those children deal with related services too...
+    //Getting singers and slips
     this.getSingers();
-
     this.getSlips();
   }
 
+  //How to modal
   openHowTo(content:any) {
     this.modalService.open(content, {
       ariaLabelledBy: 'how-to-karaoke',
@@ -75,6 +75,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getSingers(): void {
+    //get singers for this session
     this.singerService.getSingers(this.sessionId)
     .subscribe(singers => {
       this.singers = singers;
@@ -82,6 +83,7 @@ export class DashboardComponent implements OnInit {
   }
   
   getSlips(): void {
+    //get slips for this session
     this.slipService.getSlips(this.sessionId)
     .subscribe(slips => {
       this.slips = [];
@@ -89,6 +91,8 @@ export class DashboardComponent implements OnInit {
         slip.isCollapsed = true;
         this.slips.push(slip);
       })
+
+      //if set, balance the slips
       if(this.settings.isAutoBalanceQueue){
         this.balanceQueue();
       }
@@ -117,9 +121,11 @@ export class DashboardComponent implements OnInit {
   }
 
   updateSingers(singers: any): void {
-    /* capturing the emit from singers component */
+    /* capturing the emitted singers from singers component */
     //TODO: move singers to children component(s) have dashboard just deal with slips
     this.singers = singers;
+
+    //if set balance the queue
     if(this.settings.isAutoBalanceQueue) {
       this.balanceQueue();
     }
@@ -127,8 +133,10 @@ export class DashboardComponent implements OnInit {
   }
 
   updateSlips(slips: any): void {
-    /* called when slips needs updating */
+    /* capturing the emitted slips from slips component*/
     this.slips = slips;
+
+    //if set, balance the queue
     if(this.settings.isAutoBalanceQueue) {
       this.balanceQueue();
     }
@@ -154,7 +162,7 @@ export class DashboardComponent implements OnInit {
   }
 
   balanceQueue(): void {
-    //heavy lifting moved to backend - so much faster
+    //balance the queue to ensure fairness
     //TODO: mybe preserve order of first queue 'chunk' and replicate to following queue 'chunks'
     this.slipService.updateBalancedSlips(this.slips).subscribe( balancedSlips => {
       this.slips = balancedSlips;

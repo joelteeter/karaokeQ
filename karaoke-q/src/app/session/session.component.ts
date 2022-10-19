@@ -30,7 +30,8 @@ export class SessionComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle('Karaoke Queue Sessions');
-    //console.log('initialing ', this.title.getTitle());
+
+    //get the sessions
     this.getSessions();
 
     //check env isAdmin
@@ -47,6 +48,7 @@ export class SessionComponent implements OnInit {
 
   isMagicWord(str: string): void {
     //TODO: add users and roles, this is a bad workaround for now
+    //disable buttons if no magic word
     if(str.toLowerCase() == 'pretty please') {
       this.isAdmin = true;
     } else {
@@ -55,6 +57,7 @@ export class SessionComponent implements OnInit {
   }
 
   add(name: string): void {
+    //Add a session, then navigate to the session
     name = name.trim();
     if(!name) {
       return;
@@ -66,13 +69,16 @@ export class SessionComponent implements OnInit {
   }
 
   openLibraryManager(): void {
+    //library manager modal with manage-library component
     const modalRef = this.modalService.open(ManageLibraryComponent, {
       ariaLabelledBy: 'manage-song-library',
       scrollable: true,
       size: 'xl',
     });
   }
+
   openSessionManager(): void {
+    //session manager modal with manage-session component
     const modalRef = this.modalService.open(ManageSessionsComponent, {
       ariaLabelledBy: 'manage-sessions',
       scrollable: true,

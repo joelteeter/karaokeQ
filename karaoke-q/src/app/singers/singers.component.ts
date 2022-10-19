@@ -38,8 +38,8 @@ export class SingersComponent implements OnInit {
   ngOnInit(): void {
   }
 
-    open(content:any) {
-
+  open(content:any) {
+    //singer edit modal
     this.modalService.open(content, {
       ariaLabelledBy: 'modal-basic-title',
       size: 'xl',
@@ -55,6 +55,7 @@ export class SingersComponent implements OnInit {
   }
 
   deleteSinger(singer: Singer): void {
+    //Deliting a singer
     //Need to delete the slips assigned to the singer being deleted as well
     this.singers = this.singers.filter(obj => obj !== singer);
     this.singerService.deleteSinger(singer.id).subscribe(() => {
@@ -84,6 +85,7 @@ export class SingersComponent implements OnInit {
   }
 
   updateSinger(singer: any): void {
+    //Update or add a singer
     //Need to update the slips assigned to the updated singer as well
     if(!singer.song && singer.id) {
       //updating singer
@@ -108,6 +110,7 @@ export class SingersComponent implements OnInit {
   }
 
   updateSlips(singer: Singer): void {
+    //updating slips assigned to singer
     this.slips.forEach(slip => {
       if(slip.singer && singer.id && slip.singer.id === singer.id) { 
         slip.singer = singer;       
