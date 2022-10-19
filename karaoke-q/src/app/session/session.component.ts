@@ -104,6 +104,7 @@ export class SessionComponent implements OnInit {
       this.getSessions();
     }, (reason) => {
       //on dismiss
+      //TODO: update from modal response, this is lazy and wasteful
       this.getSessions();
     });
   }
