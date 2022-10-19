@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {CdkDragDrop} from '@angular/cdk/drag-drop';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import { Slip } from '../models/slip';
 import { SlipService } from '../services/slip.service';
 import { faTrashAlt, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
@@ -62,13 +62,13 @@ export class SlipsComponent implements OnInit {
         draggedTo : event.currentIndex,
         slips : this.slips,
       };
-
-      this.slipService.dragDropSlip(payload).subscribe( result => {
-        this.slips = result;
-        //emmit to dashboard
-        this.updatedSlips.emit(this.slips);
-      });  
       
+      this.slipService.dragDropSlip(payload).subscribe( result => {
+        //emmit to dashboard
+        this.updatedSlips.emit(result);
+      });
+      //from material dragdrop makes the dropping smoother  
+      moveItemInArray(this.slips, event.previousIndex, event.currentIndex);
     }
   }
   
