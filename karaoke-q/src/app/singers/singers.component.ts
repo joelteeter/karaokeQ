@@ -46,7 +46,7 @@ export class SingersComponent implements OnInit {
     this.modalService.open(content, {
       ariaLabelledBy: 'modal-basic-title',
       size: 'xl',
-      scrollable: true,
+      scrollable: false,
     }).result.then((result) => {
       if(result === 'Done click') {
         //don't do anything        
