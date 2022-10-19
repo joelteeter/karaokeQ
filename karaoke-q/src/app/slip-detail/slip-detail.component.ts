@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { BrowserModule, Title } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Singer } from '../models/singer';
@@ -24,12 +24,9 @@ export class SlipDetailComponent implements OnInit {
   closeResult = '';
   faEdit = faEdit;
 
-  constructor(private modalService: NgbModal,
-              private title: Title, ) { }
+  constructor(private modalService: NgbModal, ) { }
 
   ngOnInit(): void {
-    this.title.setTitle('slip-detail');
-    //console.log('initialing ', this.title.getTitle());
   }
 
   open(content:any) {

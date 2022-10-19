@@ -10,7 +10,7 @@ import { delay } from 'rxjs/operators';
 export class AppComponent {
 
   loading$ = this.spinnerService.loading$.pipe(delay(0));
-  title = 'karaoke-q';
+  title = 'karaoke-queu';
 
   constructor(public spinnerService: SpinnerService) { }
 

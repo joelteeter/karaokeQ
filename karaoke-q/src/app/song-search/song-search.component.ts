@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { BrowserModule, Title } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
@@ -24,8 +24,7 @@ export class SongSearchComponent implements OnInit {
 
   faTrashAlt = faTrashAlt;
 
-  constructor(private songService: SongService,
-              private title: Title, ) { }
+  constructor(private songService: SongService, ) { }
 
   //push term into observable stream
   search(term: string): void {
@@ -33,8 +32,6 @@ export class SongSearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.title.setTitle('song-search');
-    //console.log('initialing ', this.title.getTitle());
 
     this.songSelected = null;
     this.songs$ = this.searchTerms.pipe(

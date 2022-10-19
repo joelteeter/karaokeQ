@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { BrowserModule, Title } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Singer } from '../models/singer';
 import { SingerService } from '../services/singer.service';
@@ -33,12 +33,9 @@ export class SingersComponent implements OnInit {
 
   constructor(private singerService: SingerService, 
               private slipService: SlipService, 
-              private modalService: NgbModal,
-              private title: Title, ) { }
+              private modalService: NgbModal ) { }
 
   ngOnInit(): void {
-    this.title.setTitle('singers');
-    //console.log('initialing ', this.title.getTitle());
   }
 
     open(content:any) {

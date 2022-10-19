@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { BrowserModule, Title } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Song } from '../models/song';
 
@@ -15,11 +15,9 @@ export class EditSongComponent implements OnInit {
   validSong:boolean = false;
   validatingSong:boolean = true;
 
-  constructor(private title: Title, public activeModal: NgbActiveModal) { }
+  constructor(public activeModal: NgbActiveModal) { }
 
   ngOnInit(): void {
-    this.title.setTitle('edit-song');
-    //console.log('initialing ', this.title.getTitle());
   }
 
 }

@@ -29,7 +29,7 @@ export class SessionComponent implements OnInit {
               private title: Title, ) { }
 
   ngOnInit(): void {
-    this.title.setTitle('sessions');
+    this.title.setTitle('Karaoke Queue Sessions');
     //console.log('initialing ', this.title.getTitle());
     this.getSessions();
 
