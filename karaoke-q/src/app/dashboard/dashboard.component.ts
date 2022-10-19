@@ -37,7 +37,7 @@ export class DashboardComponent implements OnInit {
     private title: Title ) { }
 
   ngOnInit(): void {
-    this.title.setTitle('dashboard');
+    this.title.setTitle('Karaoke Queue Session Dashboard');
     //console.log('initialing ', this.title.getTitle());
 
     //Get valid session or redirect back to sessions component
@@ -47,6 +47,7 @@ export class DashboardComponent implements OnInit {
         this.sessionService.getSession(this.sessionId).subscribe( (result:any) => {
           if(result.length > 0) {
             this.session = result;
+            this.title.setTitle(`${this.session[0].name} Karaoke Dashboard`);
           } else {
             //invalid session, go home
             this.session = null;

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { BrowserModule, Title } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Session } from '../models/session';
 import { SessionService } from '../services/session.service';
@@ -23,11 +23,9 @@ export class ManageSessionsComponent implements OnInit {
     private singerService: SingerService, 
     private slipService:SlipService, 
     public activeModal: NgbActiveModal,
-    private title: Title, ) { }
+    ) { }
 
   ngOnInit(): void {
-    this.title.setTitle('manage-sessions');
-    //console.log('initialing ', this.title.getTitle());
   }
 
   delete(session: Session): void {

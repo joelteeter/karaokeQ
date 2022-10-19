@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { BrowserModule, Title } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CdkTableModule } from '@angular/cdk/table';
 import { Sort } from '@angular/material/sort';
@@ -27,12 +27,9 @@ export class ManageLibraryComponent implements OnInit {
   constructor(private songService: SongService,
               private slipService: SlipService,
               private modalService: NgbModal,
-              public activeModal: NgbActiveModal,
-              private title: Title, ) { }
+              public activeModal: NgbActiveModal, ) { }
 
   ngOnInit(): void {
-    this.title.setTitle('manage-library');
-    //console.log('initialing ', this.title.getTitle());
 
     //keep dataSource and songs lists seperate, to undo search/filter, etc.
     this.songService.getSongs().subscribe( (songs:any) => {
